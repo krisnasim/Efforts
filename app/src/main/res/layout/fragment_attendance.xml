@@ -1,0 +1,93 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/attendanceFragment"
+    tools:context="com.android.efforts.fragment.AttendanceFragment">
+
+    <TextView
+        android:text="Absen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="33dp"
+        android:id="@+id/textView3"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/attendance_type" />
+
+    <Spinner
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/attendance_type"
+        android:entries="@array/attendance"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/textView3"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="Kirim"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:textColor="#ffffff"
+        android:id="@+id/submitAttendanceButton"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="77dp" />
+
+    <TextView
+        android:text="Hasil Pindai QR Code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/qr_code_result"
+        android:textSize="16sp"
+        android:layout_alignBaseline="@+id/qr_code_button"
+        android:layout_alignBottom="@+id/qr_code_button"
+        android:layout_alignStart="@+id/attendance_type" />
+
+    <Button
+        android:text="QR Code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:textColor="#ffffff"
+        android:layout_marginTop="49dp"
+        android:id="@+id/qr_code_button"
+        android:layout_below="@+id/attendance_type"
+        android:layout_alignEnd="@+id/attendance_type" />
+
+    <TextView
+        android:text="Catatan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:id="@+id/remark_attendance"
+        android:layout_alignStart="@+id/qr_code_result"
+        android:layout_below="@id/qr_code_result"/>
+
+    <EditText
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:minHeight="100dp"
+        android:gravity="top"
+        android:textSize="18sp"
+        android:hint="Tulis catatan tambahan disini"
+        android:maxLines="5"
+        android:ems="10"
+        android:layout_marginTop="12dp"
+        android:id="@+id/remark_attendance_input"
+        android:layout_below="@+id/remark_attendance"
+        android:layout_alignStart="@+id/remark_attendance" />
+
+    <Button
+        android:text="Cari Lokasi"
+        android:padding="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:textColor="#ffffff"
+        android:id="@+id/location_button"
+        android:layout_below="@+id/textView3"
+        android:layout_alignEnd="@+id/attendance_type" />
+
+</RelativeLayout>

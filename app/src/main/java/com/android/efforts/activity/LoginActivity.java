@@ -37,11 +37,9 @@ public class LoginActivity extends AppCompatActivity implements Response.ErrorLi
     private static final int REQUEST_SIGNUP = 0;
     private ProgressDialog progressDialog;
 
-    @BindView(R.id.input_email)
-    TextView input_email;
+    @BindView(R.id.input_email) TextView input_email;
     @BindView(R.id.input_password) TextView input_pwd;
-    @BindView(R.id.btn_login)
-    Button btn_login;
+    @BindView(R.id.btn_login) Button btn_login;
     @BindView(R.id.link_signup) TextView link_signup;
     @BindView(R.id.link_skip_login) TextView link_skip_login;
 

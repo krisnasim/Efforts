@@ -4,6 +4,39 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">Settings</string>
 
+    <string-array name="attendance">
+        <item>Masuk</item>
+        <item>Keluar</item>
+        <item>Sakit</item>
+        <item>Lain-Lain</item>
+    </string-array>
+
+    <string-array name="home_menu_list">
+        <item>Absen</item>
+        <item>Penjualan</item>
+        <item>Inventaris</item>
+        <item>Sales Kit</item>
+        <item>Kompetitor</item>
+        <item>Forum</item>
+        <!--<item>API List</item>-->
+    </string-array>
+
+    <!-- URL List -->
+    <string name="base_url">https://dell-api.verifi.care</string>
+    <string name="login">https://dell-api.verifi.care/login</string>
+    <string name="create_attendance">https://dell-api.verifi.care/absences/create</string>
+    <string name="create_sellout">https://dell-api.verifi.care/sellouts/create</string>
+    <string name="create_inventory">https://dell-api.verifi.care/inventories/create</string>
+    <string name="create_issue">https://dell-api.verifi.care/issues/create</string>
+    <string name="list_all_post">https://dell-api.verifi.care/posts/list</string>
+    <string name="list_posms">https://dell-api.verifi.care/posms/list</string>
+    <string name="list_saleskits">https://dell-api.verifi.care/sell_kits/list</string>
+    <string name="get_post">https://dell-api.verifi.care/posts/</string>
+    <string name="get_comment">https://dell-api.verifi.care/posts/list_comments/</string>
+    <string name="add_comment">https://dell-api.verifi.care/posts/create_comment/</string>
+    <string name="create_visibility">https://dell-api.verifi.care/visibilities/create</string>
+    <string name="create_posm_inventory">https://dell-api.verifi.care/posms/inventory/create</string>
+
     <!-- Barcode Activity -->
     <string name="barcode_command">Letakan gambar Barcode di dalam area pemindai</string>
 
@@ -21,5 +54,8 @@
     <string name="title_sellout_fragment">Penjualan</string>
 
     <string name="title_logout">Keluar</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

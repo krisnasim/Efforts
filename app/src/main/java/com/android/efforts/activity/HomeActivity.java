@@ -22,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.efforts.R;
+import com.android.efforts.fragment.AttendanceFragment;
+import com.android.efforts.fragment.HomeFragment;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -143,17 +145,13 @@ public class HomeActivity extends AppCompatActivity
         if(id == R.id.nav_dashboard) {
             //fragment = new HomeFragment();
         }else if (id == R.id.nav_attendance) {
-            //fragment = new AttendanceFragment();
+            fragment = new AttendanceFragment();
         } else if (id == R.id.nav_sellout) {
             //fragment = new SelloutFragment();
-        } else if (id == R.id.nav_inventory) {
-            //fragment = new InventoryFragment();
         } else if (id == R.id.nav_product_knowledge) {
             //fragment = new SalesKitFragment();
         } else if (id == R.id.nav_competitor) {
             //fragment = new CompetitorFragment();
-        } else if (id == R.id.nav_forum) {
-            //fragment = new ForumFragment();
         } else if(id == R.id.nav_logout) {
             logout();
         }
@@ -222,7 +220,7 @@ public class HomeActivity extends AppCompatActivity
         dell_image_logo.setVisibility(View.GONE);
 
         boolean boolIntent = checkforBundle();
-        Fragment fragment = null;
+        Fragment fragment = new HomeFragment();
         Log.d("boolIntent", String.valueOf(boolIntent));
         if(boolIntent) {
             //fragment = new ForumFragment();

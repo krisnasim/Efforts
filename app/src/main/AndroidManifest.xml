@@ -16,10 +16,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.LoginActivity" />
+        <activity
+                android:name=".activity.LoginActivity"
+                android:theme="@style/NoActionBar"/>
         <activity android:name=".activity.BarcodeActivity" />
         <activity android:name=".activity.QRCodeActivity" />
-        <activity android:name=".activity.HomeActivity"></activity>
+        <activity
+                android:name=".activity.HomeActivity"
+                android:theme="@style/NoActionBar"/>
     </application>
 
 </manifest>
