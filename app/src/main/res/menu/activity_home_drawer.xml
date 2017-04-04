@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_dashboard"
+            android:icon="@drawable/ic_dashboard"
+            android:title="@string/dashboard_title" />
+        <item
+            android:id="@+id/nav_attendance"
+            android:icon="@drawable/ic_attendance"
+            android:title="@string/title_attendance_fragment" />
+        <item
+            android:id="@+id/nav_sellout"
+            android:icon="@drawable/ic_sellout"
+            android:title="@string/title_sellout_fragment" />
+        <item
+            android:id="@+id/nav_inventory"
+            android:icon="@drawable/ic_inventory"
+            android:title="@string/title_inventory_fragment" />
+        <item
+            android:id="@+id/nav_product_knowledge"
+            android:icon="@drawable/ic_product_knowledge"
+            android:title="@string/title_product_knowledge_fragment" />
+        <item
+            android:id="@+id/nav_competitor"
+            android:icon="@drawable/ic_competitor"
+            android:title="@string/title_competitor_fragment" />
+        <item
+            android:id="@+id/nav_forum"
+            android:icon="@drawable/ic_forum"
+            android:title="@string/title_Forum_fragment" />
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_logout"
+            android:title="@string/title_logout" />
+    </group>
+</menu>

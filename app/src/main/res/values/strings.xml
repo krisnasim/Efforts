@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Efforts</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Barcode Activity -->
+    <string name="barcode_command">Letakan gambar Barcode di dalam area pemindai</string>
+
+    <!-- QRCode Activity -->
+    <string name="qrcode_command">Letakan gambar QRCode di dalam area pemindai</string>
+    <string name="turn_on_flashlight">Nyalakan Lampu</string>
+    <string name="turn_off_flashlight">Matikan Lampu</string>
+
+    <string name="dashboard_title">Beranda</string>
+    <string name="title_attendance_fragment">Absen</string>
+    <string name="title_competitor_fragment">Kompetitor</string>
+    <string name="title_Forum_fragment">Forum</string>
+    <string name="title_inventory_fragment">Inventaris</string>
+    <string name="title_product_knowledge_fragment">Sales Kit</string>
+    <string name="title_sellout_fragment">Penjualan</string>
+
+    <string name="title_logout">Keluar</string>
+
+</resources>
