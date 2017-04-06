@@ -9,13 +9,16 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
+    android:background="@color/colorPrimary"
     tools:context="com.android.efforts.activity.SplashActivity">
 
-    <ImageView
+    <TextView
+        android:id="@+id/splash_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@mipmap/ic_launcher"
-        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/imageView" />
+        android:layout_centerVertical="true"
+        android:textSize="40sp"
+        android:textColor="#ffffff"
+        android:text="Efforts" />
 </RelativeLayout>

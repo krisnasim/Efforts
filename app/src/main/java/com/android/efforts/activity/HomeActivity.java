@@ -23,7 +23,9 @@ import android.widget.Toast;
 
 import com.android.efforts.R;
 import com.android.efforts.fragment.AttendanceFragment;
+import com.android.efforts.fragment.CompetitorFragment;
 import com.android.efforts.fragment.HomeFragment;
+import com.android.efforts.fragment.SelloutFragment;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -147,11 +149,9 @@ public class HomeActivity extends AppCompatActivity
         }else if (id == R.id.nav_attendance) {
             fragment = new AttendanceFragment();
         } else if (id == R.id.nav_sellout) {
-            //fragment = new SelloutFragment();
-        } else if (id == R.id.nav_product_knowledge) {
-            //fragment = new SalesKitFragment();
+            fragment = new SelloutFragment();
         } else if (id == R.id.nav_competitor) {
-            //fragment = new CompetitorFragment();
+            fragment = new CompetitorFragment();
         } else if(id == R.id.nav_logout) {
             logout();
         }

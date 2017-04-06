@@ -1,0 +1,215 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/competitor_screen"
+        tools:context="com.android.efforts.fragment.CompetitorFragment">
+
+        <TextView
+            android:text="Nama Program"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            style="@style/TextDefault"
+            android:id="@+id/program_name_label"
+            android:layout_marginStart="35dp" />
+
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="@string/information_hint"
+            android:textColorHint="@color/White"
+            android:ems="10"
+            android:layout_marginTop="12dp"
+            style="@style/TextDefault"
+            android:id="@+id/info_program_name_input"
+            android:layout_below="@+id/program_name_label"
+            android:layout_alignStart="@+id/program_name_label" />
+
+        <TextView
+            android:text="@string/information_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            style="@style/TextDefault"
+            android:id="@+id/info_competitor"
+            android:layout_below="@+id/info_program_name_input"
+            android:layout_alignStart="@+id/program_name_label"/>
+
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:minHeight="100dp"
+            android:gravity="top"
+            android:hint="@string/information_hint"
+            android:textColorHint="@color/White"
+            style="@style/TextDefault"
+            android:maxLines="5"
+            android:ems="10"
+            android:layout_marginTop="12dp"
+            android:id="@+id/info_competitor_input"
+            android:layout_below="@+id/info_competitor"
+            android:layout_alignStart="@+id/info_competitor" />
+
+        <TextView
+            android:text="Foto Kompetitor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            style="@style/TextDefault"
+            android:layout_below="@id/info_competitor_input"
+            android:id="@+id/info_picture"
+            android:layout_alignStart="@+id/program_name_label" />
+
+        <Button
+            android:text="Pilih"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/pick_image_competitor_button"
+            android:background="@color/colorAccent"
+            android:textColor="#ffffff"
+            android:layout_marginStart="80dp"
+            android:layout_alignTop="@+id/info_picture"
+            android:layout_alignStart="@+id/submit_competitor_btn" />
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="262dp"
+            android:id="@+id/competitor_picture"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="50dp"
+            android:layout_below="@+id/info_picture"
+            android:layout_alignStart="@+id/program_name_label" />
+
+        <TextView
+            android:text="Nama Toko"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/competitor_picture"
+            android:layout_marginTop="40dp"
+            style="@style/TextDefault"
+            android:id="@+id/store_name_label"
+            android:layout_alignStart="@+id/program_name_label" />
+
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="@string/information_hint"
+            android:textColorHint="@color/White"
+            style="@style/TextDefault"
+            android:ems="10"
+            android:layout_marginTop="12dp"
+            android:id="@+id/info_store_name_input"
+            android:layout_below="@+id/store_name_label"
+            android:layout_alignStart="@+id/info_competitor" />
+
+        <TextView
+            android:text="Nama Merk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/info_store_name_input"
+            android:layout_marginTop="40dp"
+            style="@style/TextDefault"
+            android:id="@+id/brand_name_label"
+            android:layout_alignStart="@+id/info_competitor_input" />
+
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="@string/information_hint"
+            android:textColorHint="@color/White"
+            style="@style/TextDefault"
+            android:ems="10"
+            android:layout_marginTop="12dp"
+            android:id="@+id/info_brand_name_input"
+            android:layout_below="@+id/brand_name_label"
+            android:layout_alignStart="@+id/info_competitor" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_below="@id/info_brand_name_input"
+            android:id="@+id/date_input_group"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:orientation="vertical">
+                <TextView
+                    android:text="@string/current_date_competitor_fragment_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    style="@style/TextDefault"
+                    android:id="@+id/start_date_competitor" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="date"
+                    android:hint="@string/current_date_competitor_fragment_hint"
+                    android:textColorHint="@color/White"
+                    style="@style/TextDefault"
+                    android:ems="10"
+                    android:layout_marginTop="13dp"
+                    android:id="@+id/start_date_competitor_input" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:orientation="vertical">
+                <TextView
+                    android:text="@string/current_date_competitor_fragment_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    style="@style/TextDefault"
+                    android:id="@+id/end_date_competitor" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="date"
+                    android:hint="@string/current_date_competitor_fragment_hint"
+                    android:textColorHint="@color/White"
+                    style="@style/TextDefault"
+                    android:ems="10"
+                    android:layout_marginTop="13dp"
+                    android:id="@+id/end_date_competitor_input" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:text="@string/submit_button_competitor_fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:textColor="#ffffff"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:id="@+id/submit_competitor_btn"
+            android:layout_below="@+id/date_input_group"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+</ScrollView>

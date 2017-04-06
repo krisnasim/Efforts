@@ -11,13 +11,17 @@
             android:icon="@drawable/ic_attendance"
             android:title="@string/title_attendance_fragment" />
         <item
+            android:id="@+id/nav_sellout2"
+            android:icon="@drawable/ic_sellout"
+            android:title="Report" />
+        <item
+            android:id="@+id/nav_competitor2"
+            android:icon="@drawable/ic_competitor"
+            android:title="Task" />
+        <item
             android:id="@+id/nav_sellout"
             android:icon="@drawable/ic_sellout"
-            android:title="@string/title_sellout_fragment" />
-        <item
-            android:id="@+id/nav_product_knowledge"
-            android:icon="@drawable/ic_product_knowledge"
-            android:title="@string/title_product_knowledge_fragment" />
+            android:title="News" />
         <item
             android:id="@+id/nav_competitor"
             android:icon="@drawable/ic_competitor"

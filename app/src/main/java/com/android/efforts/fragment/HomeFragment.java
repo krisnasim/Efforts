@@ -65,15 +65,11 @@ public class HomeFragment extends Fragment {
                 } else if (j == 1) {
                     menu.setMenuThumbnail(R.drawable.sellout);
                 } else if (j == 2) {
-                    menu.setMenuThumbnail(R.drawable.inventory);
+                    menu.setMenuThumbnail(R.drawable.competitor);
                 } else if (j == 3) {
-                    menu.setMenuThumbnail(R.drawable.saleskit);
+                    menu.setMenuThumbnail(R.drawable.sellout);
                 } else if (j == 4) {
                     menu.setMenuThumbnail(R.drawable.competitor);
-                } else if (j == 5) {
-                    menu.setMenuThumbnail(R.drawable.forum);
-                } else if (j == 6) {
-                    menu.setMenuThumbnail(R.drawable.forum);
                 }
 
                 Log.d("printout", menu.getMenuName());
@@ -109,17 +105,9 @@ public class HomeFragment extends Fragment {
                     if(position == 0) {
                         fragment = new AttendanceFragment();
                     } else if(position == 1) {
-                        //fragment = new SelloutFragment();
+                        fragment = new SelloutFragment();
                     } else if(position == 2) {
-                        //fragment = new InventoryFragment();
-                    } else if(position == 3) {
-                        //fragment = new SalesKitFragment();
-                    } else if(position == 4) {
-                        //fragment = new CompetitorFragment();
-                    } else if(position == 5) {
-                        //fragment = new ForumFragment();
-                    } else if(position == 6) {
-                        //fragment = new BlankAPIFragment();
+                        fragment = new CompetitorFragment();
                     }
 
                     if (act != null) // Make sure we are attached

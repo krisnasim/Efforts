@@ -1,0 +1,90 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/sellout_screen"
+    tools:context="com.android.efforts.fragment.SelloutFragment">
+
+    <TextView
+        android:text="Kode Barang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/label_scan"
+        android:textStyle="normal|bold"
+        android:textAllCaps="true"
+        style="@style/TextDefault"
+        android:layout_marginTop="29dp"
+        android:textSize="14sp"
+        android:layout_marginStart="38dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/scan_result"
+        style="@style/TextDefault"
+        android:text="N/A"
+        android:layout_below="@+id/label_scan"
+        android:layout_alignStart="@+id/label_scan"
+        android:layout_toStartOf="@+id/scan_button"
+        android:textSize="18sp" />
+
+    <Button
+        android:text="Pindai"
+        android:padding="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/scan_button"
+        android:background="@color/colorAccent"
+        android:textColor="#ffffff"
+        android:layout_marginEnd="37dp"
+        android:layout_alignTop="@+id/label_scan"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:text="Foto Invoice"
+        style="@style/TextDefault"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/label_picture"
+        android:textStyle="normal|bold"
+        android:textAllCaps="true"
+        android:layout_marginTop="37dp"
+        android:textSize="14sp"
+        android:layout_below="@+id/scan_button"
+        android:layout_alignStart="@+id/scan_result" />
+
+    <Button
+        android:text="Kirim"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sellout_submit_button"
+        android:background="@color/colorAccent"
+        android:textColor="#ffffff"
+        android:layout_marginBottom="31dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="170dp"
+        android:layout_height="297dp"
+        android:id="@+id/invoice_preview"
+        android:layout_below="@+id/label_picture"
+        android:layout_alignStart="@+id/label_picture"
+        android:layout_above="@+id/sellout_submit_button" />
+
+    <Button
+        android:text="Pilih"
+        android:padding="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/pick_image_button"
+        android:background="@color/colorAccent"
+        android:textColor="#ffffff"
+        android:layout_alignTop="@+id/label_picture"
+        android:layout_alignStart="@+id/scan_button" />
+
+
+</RelativeLayout>

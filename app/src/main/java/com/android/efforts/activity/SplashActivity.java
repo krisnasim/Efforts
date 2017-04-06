@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
@@ -15,6 +16,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.efforts.R;
@@ -23,15 +25,20 @@ import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class SplashActivity extends AppCompatActivity implements DialogInterface.OnClickListener {
 
+    @BindView(R.id.splash_text) TextView splash_text;
+
     // Splash screen timer
-    private static int SPLASH_TIME_OUT = 1500;
+    private static int SPLASH_TIME_OUT = 3500;
     static final Integer LOCATION = 0x1;
-    static final Integer CALL = 0x2;
-    static final Integer WRITE_EXST = 0x3;
-    static final Integer READ_EXST = 0x4;
-    static final Integer CAMERA = 0x5;
+    //static final Integer CALL = 0x2;
+    static final Integer WRITE_EXST = 0x2;
+    //static final Integer READ_EXST = 0x4;
+    static final Integer CAMERA = 0x3;
     static final Integer ACCOUNTS = 0x6;
     static final Integer GPS_SETTINGS = 0x7;
     static final String TAG = "MainActivity";
@@ -46,9 +53,15 @@ public class SplashActivity extends AppCompatActivity implements DialogInterface
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        ButterKnife.bind(this);
+        //change typeface
+        Typeface face= Typeface.createFromAsset(getAssets(), "MOAM91.otf");
+        splash_text.setTypeface(face);
 
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+        //Intent intent = new Intent(this, LoginActivity.class);
+        //startActivity(intent);
+        //Log.d("onCreate", "creating splash activity");
+        askForPermission(Manifest.permission.ACCESS_FINE_LOCATION,LOCATION);
     }
 
     @Override
@@ -69,21 +82,19 @@ public class SplashActivity extends AppCompatActivity implements DialogInterface
                 //Location
                 case 1:
                     isLocationGranted = true;
+                    Log.d("locationGranted!", "location is granted!");
                     askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,WRITE_EXST);
                     break;
                 //Write external Storage
                 case 2:
                     isMediaGranted = true;
+                    Log.d("mediaGranted!", "media is granted!");
                     askForPermission(Manifest.permission.CAMERA,CAMERA);
                     break;
-                //Read External Storage
-                case 3:
-                    Intent imageIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(imageIntent, 11);
-                    break;
                 //Camera
-                case 4:
+                case 3:
                     isCameraGranted = true;
+                    Log.d("cameraGranted!", "camera is granted!");
                     checkAllPermissions();
                     break;
             }
@@ -95,6 +106,7 @@ public class SplashActivity extends AppCompatActivity implements DialogInterface
                     showMessageOKCancel("Kami perlu akses lokasi anda untuk beberapa fitur dalam aplikasi Verificare. Mohon mengaktifkan agar aplikasi bisa berjalan dengan baik.", this, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            Log.d("testLocation", "Asking for location permission");
                             askForPermission(Manifest.permission.ACCESS_FINE_LOCATION,LOCATION);
                         }
                     }, this);
@@ -104,15 +116,17 @@ public class SplashActivity extends AppCompatActivity implements DialogInterface
                     showMessageOKCancel("Kami perlu akses data anda untuk dapat menulis data dari aplikasi Verificare. Mohon mengaktifkan agar aplikasi bisa berjalan dengan baik", this, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            Log.d("testExternal", "Asking for external permission");
                             askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,WRITE_EXST);
                         }
                     }, this);
                     break;
                 //Camera
-                case 4:
+                case 3:
                     showMessageOKCancel("Kami perlu akses kamera anda untuk dapat mengambil gambar dengan aplikasi Verificare. Mohon mengaktifkan agar aplikasi bisa berjalan dengan baik.", this, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            Log.d("testCamera", "Asking for camera permission");
                             askForPermission(Manifest.permission.CAMERA,CAMERA);
                         }
                     }, this);
@@ -131,7 +145,7 @@ public class SplashActivity extends AppCompatActivity implements DialogInterface
 
     private void askForPermission(String permission, Integer requestCode) {
         if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
-
+            //Log.d("askPermission", "permission is not granted for "+permission);
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
 
@@ -150,17 +164,20 @@ public class SplashActivity extends AppCompatActivity implements DialogInterface
             if(requestCode == LOCATION) {
                 isLocationGranted = true;
                 askForPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE,WRITE_EXST);
+                Log.d("locationCheck", "location is granted!");
                 checkAllPermissions();
             }
 
             if(requestCode == WRITE_EXST) {
                 isMediaGranted = true;
                 askForPermission(Manifest.permission.CAMERA,CAMERA);
+                Log.d("locationCheck", "media external is granted!");
                 checkAllPermissions();
             }
 
             if(requestCode == CAMERA) {
                 isCameraGranted = true;
+                Log.d("locationCheck", "camera is granted!");
                 checkAllPermissions();
             }
         }
@@ -193,6 +210,9 @@ public class SplashActivity extends AppCompatActivity implements DialogInterface
             public void run() {
                 //check for sharedPreferences before deciding which activity to go
                 //checkforSharedPreferences();
+                //instead call the intent here. dont check preferences first
+                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                startActivity(intent);
             }
         }, SPLASH_TIME_OUT);
     }

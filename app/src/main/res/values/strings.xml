@@ -13,11 +13,11 @@
 
     <string-array name="home_menu_list">
         <item>Absen</item>
-        <item>Penjualan</item>
-        <item>Inventaris</item>
-        <item>Sales Kit</item>
+        <item>Report</item>
+        <item>Task</item>
+        <item>News</item>
         <item>Kompetitor</item>
-        <item>Forum</item>
+        <!--<item>Forum</item>-->
         <!--<item>API List</item>-->
     </string-array>
 
@@ -45,9 +45,18 @@
     <string name="turn_on_flashlight">Nyalakan Lampu</string>
     <string name="turn_off_flashlight">Matikan Lampu</string>
 
+    <!-- Competitor Fragment -->
+    <string name="title_competitor_fragment">Kompetitor</string>
+    <string name="information_label">Informasi</string>
+    <string name="information_hint">Masukan informasi kompetitor disini</string>
+    <string name="impact_label">Dampak</string>
+    <string name="current_date_competitor_fragment_label">Tanggal</string>
+    <string name="current_date_competitor_fragment_hint">Masukan tanggal disini</string>
+    <string name="submit_button_competitor_fragment">Kirim</string>
+
     <string name="dashboard_title">Beranda</string>
     <string name="title_attendance_fragment">Absen</string>
-    <string name="title_competitor_fragment">Kompetitor</string>
+    <!--<string name="title_competitor_fragment">Kompetitor</string>-->
     <string name="title_Forum_fragment">Forum</string>
     <string name="title_inventory_fragment">Inventaris</string>
     <string name="title_product_knowledge_fragment">Sales Kit</string>
