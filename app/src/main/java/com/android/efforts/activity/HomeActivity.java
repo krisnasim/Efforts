@@ -25,7 +25,10 @@ import com.android.efforts.R;
 import com.android.efforts.fragment.AttendanceFragment;
 import com.android.efforts.fragment.CompetitorFragment;
 import com.android.efforts.fragment.HomeFragment;
+import com.android.efforts.fragment.NewsFragment;
+import com.android.efforts.fragment.ReportFragment;
 import com.android.efforts.fragment.SelloutFragment;
+import com.android.efforts.fragment.TaskFragment;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -145,11 +148,15 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if(id == R.id.nav_dashboard) {
-            //fragment = new HomeFragment();
+            fragment = new HomeFragment();
         }else if (id == R.id.nav_attendance) {
             fragment = new AttendanceFragment();
-        } else if (id == R.id.nav_sellout) {
-            fragment = new SelloutFragment();
+        } else if (id == R.id.nav_report) {
+            fragment = new ReportFragment();
+        } else if (id == R.id.nav_task) {
+            fragment = new TaskFragment();
+        } else if (id == R.id.nav_news) {
+            fragment = new NewsFragment();
         } else if (id == R.id.nav_competitor) {
             fragment = new CompetitorFragment();
         } else if(id == R.id.nav_logout) {

@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,6 +38,7 @@ public class LoginActivity extends AppCompatActivity implements Response.ErrorLi
     private static final int REQUEST_SIGNUP = 0;
     private ProgressDialog progressDialog;
 
+    @BindView(R.id.text_logo_login) TextView text_logo_login;
     @BindView(R.id.input_email) TextView input_email;
     @BindView(R.id.input_password) TextView input_pwd;
     @BindView(R.id.btn_login) Button btn_login;
@@ -70,6 +72,9 @@ public class LoginActivity extends AppCompatActivity implements Response.ErrorLi
 
         link_signup.setVisibility(View.GONE);
         //link_skip_login.setVisibility(View.GONE);
+        Typeface face= Typeface.createFromAsset(getAssets(), "MOAM91.otf");
+        text_logo_login.setTypeface(face);
+
         checkforSharedPreferences();
     }
 

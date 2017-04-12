@@ -1,41 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:fitsSystemWindows="true">
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        android:src="@drawable/welcome_bg"/>
+
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="56dp"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp"
+    android:focusableInTouchMode="true">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="56dp"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp"
-        android:focusableInTouchMode="true">
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:orientation="vertical"
+        <TextView
+            android:id="@+id/text_logo_login"
             android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
-            android:layout_height="100dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="EFFORTS"
-                android:textAlignment="center"
-                android:textSize="50sp"/>
+            android:layout_height="match_parent"
+            android:textColor="@color/White"
+            android:text="EFFORTS"
+            android:textAlignment="center"
+            android:textSize="50sp" />
 
-        </LinearLayout>
-        <!-- Email Label -->
+    </LinearLayout>
+    <!-- Email Label -->
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
             android:layout_marginBottom="8dp"
+            android:textColorHint="@color/White"
             app:hintTextAppearance="@style/TextLabel">
             <EditText android:id="@+id/input_email"
                 app:theme="@style/MyEditTextTheme"
+                android:textColor="@color/White"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
@@ -48,9 +59,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
+            android:textColorHint="@color/White"
             app:hintTextAppearance="@style/TextLabel">
             <EditText android:id="@+id/input_password"
                 app:theme="@style/MyEditTextTheme"
+                android:textColor="@color/White"
                 android:fontFamily="sans-serif"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -65,8 +78,8 @@
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:padding="12dp"
-            app:backgroundTint="@color/colorAccent"
-            android:textColor="#ffffff"
+            app:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/White"
             android:text="Login"
             />
 
@@ -74,7 +87,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/White"
             android:text="No account yet? Create one"
             android:gravity="center"
             android:textSize="16sp" />
@@ -83,9 +96,10 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
+            android:textColor="@color/White"
             android:text="Skip Login"
             android:gravity="center"
             android:textSize="16sp" />
 
     </LinearLayout>
-</ScrollView>
+</RelativeLayout>
