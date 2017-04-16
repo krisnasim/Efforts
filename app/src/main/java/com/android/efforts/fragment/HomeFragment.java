@@ -105,7 +105,8 @@ public class HomeFragment extends Fragment {
         XAxis bottom = bar_report_chart.getXAxis();
         bottom.setDrawAxisLine(false);
         bottom.setDrawGridLines(false);
-        bottom.setDrawLabels(false);
+        //bottom.setDrawLabels(false);
+        bottom.setPosition(XAxis.XAxisPosition.BOTTOM);
         bottom.setDrawLimitLinesBehindData(false);
         bottom.setValueFormatter(new IAxisValueFormatter() {
             @Override
@@ -130,8 +131,15 @@ public class HomeFragment extends Fragment {
         XAxis bottom_2 = bar_task_chart.getXAxis();
         bottom_2.setDrawAxisLine(false);
         bottom_2.setDrawGridLines(false);
-        bottom_2.setDrawLabels(false);
+        //bottom_2.setDrawLabels(false);
+        bottom_2.setPosition(XAxis.XAxisPosition.BOTTOM);
         bottom_2.setDrawLimitLinesBehindData(false);
+        bottom_2.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return dayData[(int) value-1];
+            }
+        });
 
         YAxis left_2 = bar_task_chart.getAxisLeft();
         left_2.setDrawLabels(false); // no axis labels

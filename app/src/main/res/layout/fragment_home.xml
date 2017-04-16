@@ -12,18 +12,54 @@
         <!--android:dividerHeight="0dp"-->
         <!--android:layout_gravity="center"/>-->
 
+        <LinearLayout
+            android:id="@+id/report_daily_group"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:gravity="center"
+            android:background="@drawable/blue_circle"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:textSize="20sp"
+                android:text="Report"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="69"
+                android:textColor="@android:color/white"
+                android:textSize="30sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="of reports"
+                android:textColor="@android:color/white"
+                android:layout_margin="5dp"/>
+
+        </LinearLayout>
+
         <android.support.v7.widget.CardView
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/card_report_view"
-            android:layout_alignParentTop="true"
+            android:layout_below="@id/report_daily_group"
             android:layout_alignParentStart="true"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+
             card_view:cardCornerRadius="4dp">
 
             <LinearLayout
@@ -32,21 +68,41 @@
                 android:orientation="vertical"
                 android:weightSum="4">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="4"
                     android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/report_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="40dp"
+                        android:textSize="22sp"
+                        android:text="Report" />
+
+                    <TextView
+                        android:id="@+id/report_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/report_label"
+                        android:layout_marginStart="20dp"
+                        android:textSize="30sp"
+                        android:text="999,999" />
 
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_gravity="center_horizontal">
+                        android:layout_gravity="center_horizontal"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentStart="true">
 
                         <com.github.mikephil.charting.charts.BarChart
                             android:id="@+id/bar_report_chart"
                             android:layout_width="match_parent"
-                            android:layout_marginStart="100dp"
+                            android:layout_marginStart="130dp"
                             android:layout_marginTop="20dp"
                             android:layout_marginBottom="20dp"
                             android:layout_height="100dp" />
@@ -78,7 +134,7 @@
                                 <!--android:textStyle="bold" />-->
                         <!--</LinearLayout>-->
                     </FrameLayout>
-                </LinearLayout>
+                </RelativeLayout>
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
@@ -101,11 +157,29 @@
             android:orientation="vertical"
             android:weightSum="4">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="4"
                 android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/task_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="40dp"
+                    android:textSize="22sp"
+                    android:text="Task" />
+
+                <TextView
+                    android:id="@+id/task_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/task_label"
+                    android:layout_marginStart="20dp"
+                    android:textSize="30sp"
+                    android:text="999,999" />
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -115,13 +189,13 @@
                     <com.github.mikephil.charting.charts.BarChart
                         android:id="@+id/bar_task_chart"
                         android:layout_width="match_parent"
-                        android:layout_marginStart="100dp"
+                        android:layout_marginStart="130dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginBottom="20dp"
                         android:layout_height="100dp" />
 
                 </FrameLayout>
-            </LinearLayout>
+            </RelativeLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
