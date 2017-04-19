@@ -6,6 +6,9 @@
         android:name="android.hardware.camera"
         android:required="true" />
 
+    <uses-permission
+        android:name="android.permission.AUTHENTICATE_ACCOUNTS"
+        android:maxSdkVersion="22" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -20,7 +23,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.SplashActivity"
+        <activity
+            android:name=".activity.SplashActivity"
             android:theme="@style/NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,13 +33,32 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".activity.LoginActivity"
-                android:theme="@style/NoActionBar"/>
+            android:name=".activity.LoginActivity"
+            android:theme="@style/NoActionBar" />
         <activity android:name=".activity.BarcodeActivity" />
         <activity android:name=".activity.QRCodeActivity" />
         <activity
-                android:name=".activity.HomeActivity"
-                android:theme="@style/NoActionBar"/>
+            android:name=".activity.HomeActivity"
+            android:theme="@style/NoActionBar" />
+        <activity android:name=".activity.AppLinkActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="event-indonesia.com"
+                    android:pathPrefix="/author/"
+                    android:scheme="http" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.AccountActivity" />
+        <activity android:name=".activity.AuthenticatorActivity" />
+        <activity android:name=".activity.WebViewActivity"
+            android:theme="@style/NoActionBar">
+
+        </activity>
     </application>
 
 </manifest>

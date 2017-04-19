@@ -1,5 +1,8 @@
 package com.android.efforts.activity;
 
+import android.accounts.Account;
+import android.accounts.AccountAuthenticatorActivity;
+import android.accounts.AccountManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +10,7 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -26,13 +30,14 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends AppCompatActivity implements Response.ErrorListener, Response.Listener<JSONObject> {
+public class LoginActivity extends AccountAuthenticatorActivity implements Response.ErrorListener, Response.Listener<JSONObject> {
 
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
@@ -182,6 +187,52 @@ public class LoginActivity extends AppCompatActivity implements Response.ErrorLi
         requestQueue.add(customJSONReq);
     }
 
+    private void loginWithOAuthNX(String email, String pwd) throws JSONException, UnsupportedEncodingException {
+        String url = "https://id.nx.tsun.moe/oauth/token";
+
+        //convert both clientID and clientSecret into Base64
+        String clientID = "07fbb8e4-8caa-4b91-a7f6-1db581164c9f";
+        String clientSecret = "qV60eBr0qGw3tbSvJ2kl86AH";
+        String combinedClient = clientID+":"+clientSecret;
+        byte[] byteArray = combinedClient.getBytes("UTF-8");
+        //convert bytes to Base64
+        String base64Result = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
+        Log.d("NXServer", "Entering NX Platform...");
+        Log.d("NXServer", url);
+
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json");
+        headers.put("Authorization", "Basic "+base64Result);
+
+        HashMap<String, String> params = new HashMap<>();
+        params.put("username", email);
+        params.put("password", pwd);
+        params.put("grant_type", "authorization_code");
+
+        //JSONObject insideJsonObj = new JSONObject();
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("username", email);
+        jsonObj.put("password_digest", pwd);
+
+        //JSONObject jsonObj = new JSONObject();
+        //jsonObj.put("auth", insideJsonObj);
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        CustomJSONObjectRequest customJSONReq = new CustomJSONObjectRequest(Request.Method.POST, url, jsonObj, this, this);
+
+        try {
+            //Map<String, String> testH = jsObjRequest.getHeaders();
+            //Log.d("headers",testH.get("Content-Type"));
+            Log.d("headers", String.valueOf(customJSONReq.getHeaders()));
+            Log.d("content", jsonObj.toString(2));
+        } catch (AuthFailureError authFailureError) {
+            authFailureError.printStackTrace();
+        }
+
+        requestQueue.add(customJSONReq);
+    }
+
     private void login() {
         Log.d(TAG, "Calling the Login function");
 
@@ -198,10 +249,21 @@ public class LoginActivity extends AppCompatActivity implements Response.ErrorLi
         final String password = input_pwd.getText().toString();
 
         try {
-            tryWiseServer(email, password);
+            //tryWiseServer(email, password);
+            loginWithOAuthNX(email, password);
         } catch (JSONException e) {
             e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
+    }
+
+    private void createAccount(String email, String password, String authToken) {
+        Account account = new Account(email, "YOUR ACCOUNT TYPE");
+
+        AccountManager am = AccountManager.get(this);
+        am.addAccountExplicitly(account, password, null);
+        am.setAuthToken(account, "full_access", authToken);
     }
 
     public void onLoginSuccess(String level) {
