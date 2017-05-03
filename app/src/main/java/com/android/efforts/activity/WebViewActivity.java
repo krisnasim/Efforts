@@ -3,10 +3,15 @@ package com.android.efforts.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
+import android.webkit.ValueCallback;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -108,6 +113,31 @@ public class WebViewActivity extends AppCompatActivity {
                 }
             }
         });
+
+        CookieSyncManager.createInstance(getApplicationContext());
+        CookieManager cookieManager = CookieManager.getInstance();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            cookieManager.removeAllCookies(new ValueCallback<Boolean>() {
+                @Override
+                public void onReceiveValue(Boolean value) {
+                    //haven't done shit here. yet
+                }
+            });
+        } else {
+            cookieManager.removeAllCookie();
+        }
+
+        //cookieManager.setAcceptCookie(false);
+
+        //WebView webview = new WebView(this);
+        WebSettings ws = oauth_login_web_view.getSettings();
+        ws.setSaveFormData(false);
+        //ws.setSavePassword(false);
+
+        oauth_login_web_view.clearCache(true);
+        oauth_login_web_view.clearHistory();
         oauth_login_web_view.loadUrl(final_url);
     }
+
+
 }

@@ -4,6 +4,11 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">Settings</string>
 
+    <string name="client_id">07fbb8e4-8caa-4b91-a7f6-1db581164c9f</string>
+    <string name="client_secret">qV60eBr0qGw3tbSvJ2kl86AH</string>
+    <string name="redirect_uri">https://android.efforts.trd.client.nx.tsun.moe/oauth/callback</string>
+
+
     <string-array name="attendance">
         <item>Masuk</item>
         <item>Keluar</item>

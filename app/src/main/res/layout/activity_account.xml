@@ -14,7 +14,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:textSize="20sp"
-        android:text="Your code is" />
+        android:text="Your login status is" />
 
     <TextView
         android:id="@+id/code_text_value"
