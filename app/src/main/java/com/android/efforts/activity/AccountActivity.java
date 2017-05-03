@@ -3,14 +3,19 @@ package com.android.efforts.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.android.efforts.R;
 import com.android.efforts.customclass.CustomRequest;
+import com.android.efforts.fragment.ReportFragment;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -27,19 +32,26 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class AccountActivity extends AppCompatActivity implements Response.ErrorListener, Response.Listener<JSONObject> {
 
     @BindView(R.id.code_text_value) TextView code_text_value;
+    @BindView(R.id.home_button) TextView home_button;
 
     private String url_Code = "";
+
+    @OnClick(R.id.home_button)
+    public void linkToHome() {
+        Intent intent = new Intent(AccountActivity.this, HomeActivity.class);
+        startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
         ButterKnife.bind(this);
-
         getBundleData();
     }
 

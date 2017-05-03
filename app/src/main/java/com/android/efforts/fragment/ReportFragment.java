@@ -1,109 +1,144 @@
 package com.android.efforts.fragment;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.efforts.R;
+import com.android.efforts.customclass.CustomJSONObjectRequest;
+import com.android.efforts.customclass.JWTUtils;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link ReportFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link ReportFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class ReportFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import org.json.JSONException;
+import org.json.JSONObject;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 
-    private OnFragmentInteractionListener mListener;
+public class ReportFragment extends Fragment implements Response.ErrorListener, Response.Listener<JSONObject> {
+
+    String token = "";
 
     public ReportFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ReportFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ReportFragment newInstance(String param1, String param2) {
-        ReportFragment fragment = new ReportFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_report, container, false);
-    }
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("userCred", Context.MODE_PRIVATE);
+        Log.d("sharedPref", sharedPref.getString("jwt", "NoToken"));
+        String fullName = sharedPref.getString("full_name", "John Did");
+        String email = sharedPref.getString("email", "nomail@reply.com");
+        token = sharedPref.getString("access_token", "noToken");
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+        try {
+            loginWithOAuthNX("email", "pwd");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
+        return inflater.inflate(R.layout.fragment_report, container, false);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        Log.d("errorResponse", String.valueOf(error));
+        //onLoginFailed();
+    }
+
+    @Override
+    public void onResponse(JSONObject response) {
+        String bodyResult = "";
+        try {
+            Log.d("onResponse", response.toString(2));
+            bodyResult = JWTUtils.decoded(String.valueOf(response));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loginWithOAuthNX(String email, String pwd) throws JSONException, UnsupportedEncodingException {
+        String url = "http://192.168.100.60:8180/r/api/v1/data";
+
+        //convert both clientID and clientSecret into Base64
+        String clientID = "07fbb8e4-8caa-4b91-a7f6-1db581164c9f";
+        String clientSecret = "qV60eBr0qGw3tbSvJ2kl86AH";
+        String combinedClient = clientID+":"+clientSecret;
+        byte[] byteArray = combinedClient.getBytes("UTF-8");
+        //convert bytes to Base64
+        String base64Result = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
+        Log.d("NXServer", "Entering NX Platform...");
+        Log.d("NXServer", url);
+
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/x-protobuf");
+        headers.put("Accept", "application/x-protobuf");
+        headers.put("Authorization", "Bearer "+token);
+        Log.d("token", token);
+
+        HashMap<String, String> params = new HashMap<>();
+        params.put("title", "this is title report");
+        params.put("description", "this is description");
+        params.put("report_type", "authorization_report");
+        params.put("photo_url", "photo_url");
+
+        //JSONObject insideJsonObj = new JSONObject();
+        JSONObject jsonObj = new JSONObject();
+//        jsonObj.put("username", email);
+//        jsonObj.put("password_digest", pwd);
+        jsonObj.put("title", "this is title report");
+        jsonObj.put("description", "this is description");
+        jsonObj.put("report_type", "authorization_report");
+        jsonObj.put("photo_url", "photo_url");
+
+        //JSONObject jsonObj = new JSONObject();
+        //jsonObj.put("auth", insideJsonObj);
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        CustomJSONObjectRequest customJSONReq = new CustomJSONObjectRequest(Request.Method.POST, url, jsonObj, params, headers, this, this);
+
+        try {
+            //Map<String, String> testH = jsObjRequest.getHeaders();
+            //Log.d("headers",testH.get("Content-Type"));
+            Log.d("headers", String.valueOf(customJSONReq.getHeaders()));
+            Log.d("content", jsonObj.toString(2));
+        } catch (AuthFailureError authFailureError) {
+            authFailureError.printStackTrace();
+        }
+
+        requestQueue.add(customJSONReq);
     }
 }

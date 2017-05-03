@@ -17,6 +17,7 @@ import java.util.Map;
 public class CustomJSONObjectRequest extends JsonObjectRequest {
 
     private Map<String, String> params;
+    private Map<String, String> headers;
 
     public CustomJSONObjectRequest(int method, String url, JSONObject jsonRequest,
                                    Response.Listener<JSONObject> listener,
@@ -31,12 +32,21 @@ public class CustomJSONObjectRequest extends JsonObjectRequest {
         this.params = params;
     }
 
+    public CustomJSONObjectRequest(int method, String url, JSONObject jsonRequest, Map<String, String> params,
+                                   Map<String, String> headers,
+                                   Response.Listener<JSONObject> listener,
+                                   Response.ErrorListener errorListener) {
+        super(method, url, jsonRequest, listener, errorListener);
+        this.params = params;
+        this.headers = headers;
+    }
+
 
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
-        HashMap<String, String> headers = new HashMap<String, String>();
+        //HashMap<String, String> headers = new HashMap<String, String>();
         //headers.put("Content-Type", "application/x-www-form-urlencoded");
-        headers.put("Content-Type", "application/json");
+        //headers.put("Content-Type", "application/json");
         return headers;
     }
 

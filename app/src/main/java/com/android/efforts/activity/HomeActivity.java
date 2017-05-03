@@ -67,6 +67,7 @@ public class HomeActivity extends AppCompatActivity
         Log.d("sharedPref", sharedPref.getString("jwt", "NoToken"));
         String fullName = sharedPref.getString("full_name", "John Did");
         String email = sharedPref.getString("email", "nomail@reply.com");
+        String token = sharedPref.getString("access_token", "noToken");
 
         //update label name and email
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_sr);
@@ -227,16 +228,16 @@ public class HomeActivity extends AppCompatActivity
         dell_image_logo.setVisibility(View.GONE);
 
         boolean boolIntent = checkforBundle();
-        Fragment fragment = new HomeFragment();
+        Fragment fragment = new ReportFragment();
         Log.d("boolIntent", String.valueOf(boolIntent));
-        if(boolIntent) {
-            //fragment = new ForumFragment();
-            Log.d("whichFrag", "forum one");
-        }
-        else {
-            //fragment = new HomeFragment();
-            Log.d("whichFrag", "home one");
-        }
+//        if(boolIntent) {
+//            //fragment = new ForumFragment();
+//            Log.d("whichFrag", "forum one");
+//        }
+//        else {
+//            //fragment = new HomeFragment();
+//            Log.d("whichFrag", "home one");
+//        }
 
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
