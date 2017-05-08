@@ -44,8 +44,6 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Respo
     private ProgressDialog progressDialog;
 
     @BindView(R.id.text_logo_login) TextView text_logo_login;
-    @BindView(R.id.input_email) TextView input_email;
-    @BindView(R.id.input_password) TextView input_pwd;
     @BindView(R.id.btn_login) Button btn_login;
     @BindView(R.id.link_signup) TextView link_signup;
     @BindView(R.id.link_skip_login) TextView link_skip_login;
@@ -53,7 +51,9 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Respo
     //set click listener to login button
     @OnClick(R.id.btn_login)
     public void clickToLogin(View view) {
-        login();
+        //login();
+        Intent intent = new Intent(LoginActivity.this, WebViewActivity.class);
+        startActivity(intent);
     }
 
     //set click listener to signup textview
@@ -245,17 +245,17 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Respo
         progressDialog.setMessage("Mohon tunggu...");
         progressDialog.show();
 
-        final String email = input_email.getText().toString();
-        final String password = input_pwd.getText().toString();
+        //final String email = input_email.getText().toString();
+        //final String password = input_pwd.getText().toString();
 
-        try {
-            //tryWiseServer(email, password);
-            loginWithOAuthNX(email, password);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            //tryWiseServer(email, password);
+//            loginWithOAuthNX(email, password);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
     }
 
     private void createAccount(String email, String password, String authToken) {

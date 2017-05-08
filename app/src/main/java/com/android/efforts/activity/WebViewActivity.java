@@ -1,11 +1,14 @@
 package com.android.efforts.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
@@ -14,17 +17,33 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.android.efforts.R;
+import com.android.efforts.customclass.CustomRequest;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class WebViewActivity extends AppCompatActivity {
+public class WebViewActivity extends AppCompatActivity implements Response.ErrorListener, Response.Listener<JSONObject> {
 
     @BindView(R.id.oauth_login_web_view) WebView oauth_login_web_view;
 
     private Uri uri;
+    private String url_Code = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,12 +100,15 @@ public class WebViewActivity extends AppCompatActivity {
                     Log.d("Last URI", uri.getLastPathSegment());
                     Log.d("value URI", uri.getQueryParameter("code"));
 
-                    Bundle bundle = new Bundle();
-                    bundle.putString("url_code", uri.getQueryParameter("code"));
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("url_code", uri.getQueryParameter("code"));
+                    url_Code = uri.getQueryParameter("code");
 
-                    Intent intent = new Intent(WebViewActivity.this, AccountActivity.class);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
+                    requestOAuthToken();
+
+//                    Intent intent = new Intent(WebViewActivity.this, AccountActivity.class);
+//                    intent.putExtras(bundle);
+//                    startActivity(intent);
 
                     //stop loading the view
                     view.stopLoading();
@@ -139,5 +161,105 @@ public class WebViewActivity extends AppCompatActivity {
         oauth_login_web_view.loadUrl(final_url);
     }
 
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        Log.d("onErrorResponse", "JSON Response: " + error);
+        Log.d("onErrorResponse", "JSON Error: "+error.getLocalizedMessage());
+        Log.d("onErrorResponse", "JSON Error: "+error.getMessage());
+        //code_text_value.setText("Login Failed");
+    }
 
+    @Override
+    public void onResponse(JSONObject response) {
+        try {
+            Log.d("onResponse", "JSON Response: " + response.toString(2));
+            //JSONObject storeObj = response.getJSONObject("data").getJSONObject("store");
+            Log.d("access_token", response.get("access_token").toString());
+            Log.d("refresh_token", response.get("refresh_token").toString());
+            Log.d("expires_in", response.get("expires_in").toString());
+            long expiredTime = getExpiredTime(response.get("expires_in").toString());
+            //code_text_value.setText("Login Success!");
+
+            SharedPreferences sharedPref = getSharedPreferences("userCred", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            //enter the data from oauth token exchange
+            editor.putString("access_token", response.get("access_token").toString());
+            editor.putString("refresh_token", response.get("refresh_token").toString());
+            editor.putLong("expires_in", expiredTime);
+            //save it
+            editor.apply();
+
+            //toast for success
+            Toast.makeText(this, "Login berhasil!", Toast.LENGTH_SHORT).show();
+
+            //should go over the new Activity already here
+            Intent intent = new Intent(WebViewActivity.this, HomeActivity.class);
+            startActivity(intent);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void requestOAuthToken() {
+        String url = "https://id.nx.tsun.moe/oauth/token";
+        String token = "";
+        try {
+            token = requestAuthorization();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        //set headers
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/x-www-form-urlencoded");
+        headers.put("Authorization", token);
+        //set params
+        HashMap<String, String> params = new HashMap<>();
+        params.put("grant_type", "authorization_code");
+        params.put("code", url_Code);
+        params.put("redirect_uri", "https://android.efforts.trd.client.nx.tsun.moe/oauth/callback");
+        params.put("client_id", "07fbb8e4-8caa-4b91-a7f6-1db581164c9f");
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        CustomRequest jsObjRequest = new CustomRequest(Request.Method.POST, url, params, this, this);
+        jsObjRequest.setHeaders(headers);
+
+        try {
+            Map<String, String> test = jsObjRequest.getHeaders();
+            Log.d("headers", test.get("Content-Type"));
+            Log.d("headers", test.get("Authorization"));
+        } catch (AuthFailureError authFailureError) {
+            authFailureError.printStackTrace();
+        }
+        //send the request
+        requestQueue.add(jsObjRequest);
+    }
+
+    private String requestAuthorization() throws UnsupportedEncodingException {
+        //prepare the clientID and clientSecret
+        String clientID = getResources().getString(R.string.client_id);
+        String clientSecret = getResources().getString(R.string.client_secret);
+        String combinedKey = clientID+":"+clientSecret;
+
+        //convert the combinedKey to Base64
+        byte[] convertedKey = combinedKey.getBytes("UTF-8");
+        String encodedKey = Base64.encodeToString(convertedKey, Base64.NO_WRAP);
+        Log.d("encoded64Res", encodedKey);
+        String finalKey = "Basic "+encodedKey;
+
+        return finalKey;
+    }
+
+    private long getExpiredTime(String value) {
+        long currentTime = System.currentTimeMillis();
+        Log.d("currentTimeMilis", String.valueOf(currentTime));
+        long intervalInSeconds = Long.valueOf(value);
+        Log.d("intervalInSeconds", String.valueOf(intervalInSeconds));
+        long intervalInMiliSeconds = intervalInSeconds * 1000;
+        Log.d("intervalInMiliSeconds", String.valueOf(intervalInMiliSeconds));
+        long expireTimeInMilis = currentTime + intervalInMiliSeconds;
+        Log.d("expireTimeInMilis", String.valueOf(expireTimeInMilis));
+
+        return expireTimeInMilis;
+    }
 }

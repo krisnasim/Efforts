@@ -64,7 +64,7 @@ public class HomeActivity extends AppCompatActivity
         setFirstFragment();
 
         SharedPreferences sharedPref = getSharedPreferences("userCred", Context.MODE_PRIVATE);
-        Log.d("sharedPref", sharedPref.getString("jwt", "NoToken"));
+        Log.d("sharedPref", sharedPref.getString("access_token", "NoToken"));
         String fullName = sharedPref.getString("full_name", "John Did");
         String email = sharedPref.getString("email", "nomail@reply.com");
         String token = sharedPref.getString("access_token", "noToken");
@@ -228,7 +228,8 @@ public class HomeActivity extends AppCompatActivity
         dell_image_logo.setVisibility(View.GONE);
 
         boolean boolIntent = checkforBundle();
-        Fragment fragment = new ReportFragment();
+        Fragment fragment = new HomeFragment();
+        //Fragment fragment = new ReportFragment();
         Log.d("boolIntent", String.valueOf(boolIntent));
 //        if(boolIntent) {
 //            //fragment = new ForumFragment();

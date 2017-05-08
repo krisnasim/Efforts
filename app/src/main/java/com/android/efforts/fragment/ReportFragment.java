@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.android.efforts.R;
 import com.android.efforts.customclass.CustomJSONObjectRequest;
 import com.android.efforts.customclass.JWTUtils;
+import com.android.efforts.customclass.ProtoBufRequest;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -90,7 +91,9 @@ public class ReportFragment extends Fragment implements Response.ErrorListener, 
     }
 
     private void loginWithOAuthNX(String email, String pwd) throws JSONException, UnsupportedEncodingException {
-        String url = "http://192.168.100.60:8180/r/api/v1/data";
+        //String url = "http://192.168.100.60:8180/r/api/v1/data";
+        String url = "http://form.nx.tsun.moe/r/api/v1/data";
+
 
         //convert both clientID and clientSecret into Base64
         String clientID = "07fbb8e4-8caa-4b91-a7f6-1db581164c9f";
@@ -128,17 +131,18 @@ public class ReportFragment extends Fragment implements Response.ErrorListener, 
         //jsonObj.put("auth", insideJsonObj);
 
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        CustomJSONObjectRequest customJSONReq = new CustomJSONObjectRequest(Request.Method.POST, url, jsonObj, params, headers, this, this);
+        //CustomJSONObjectRequest customJSONReq = new CustomJSONObjectRequest(Request.Method.POST, url, jsonObj, params, headers, this, this);
+        //ProtoBufRequest testReq = new ProtoBufRequest(Request.Method.POST, url, params, asd, this, this);
 
-        try {
-            //Map<String, String> testH = jsObjRequest.getHeaders();
-            //Log.d("headers",testH.get("Content-Type"));
-            Log.d("headers", String.valueOf(customJSONReq.getHeaders()));
-            Log.d("content", jsonObj.toString(2));
-        } catch (AuthFailureError authFailureError) {
-            authFailureError.printStackTrace();
-        }
-
-        requestQueue.add(customJSONReq);
+    //        try {
+    //            //Map<String, String> testH = jsObjRequest.getHeaders();
+    //            //Log.d("headers",testH.get("Content-Type"));
+    //            Log.d("headers", String.valueOf(customJSONReq.getHeaders()));
+    //            Log.d("content", jsonObj.toString(2));
+    //        } catch (AuthFailureError authFailureError) {
+    //            authFailureError.printStackTrace();
+    //        }
+    //
+    //        requestQueue.add(customJSONReq);
     }
 }

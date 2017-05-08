@@ -212,7 +212,7 @@ public class SplashActivity extends AppCompatActivity implements DialogInterface
                 //checkforSharedPreferences();
                 //instead call the intent here. dont check preferences first
                 //Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-                Intent intent = new Intent(SplashActivity.this, WebViewActivity.class);
+                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
         }, SPLASH_TIME_OUT);
