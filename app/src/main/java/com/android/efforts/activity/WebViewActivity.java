@@ -1,5 +1,6 @@
 package com.android.efforts.activity;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -64,16 +65,21 @@ public class WebViewActivity extends AppCompatActivity implements Response.Error
         //need javascript because for responsive using bootstrap
         //oauth_login_web_view.getSettings().setJavaScriptEnabled(true);
         oauth_login_web_view.setWebViewClient(new WebViewClient() {
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 // Here put your code
                 //Log.d("My Webview", final_url);
                 //Uri uri = request.get
+                Uri uri = request.getUrl();
 
                 Log.d("OverrideURL", "YOOHOO");
                 if(uri.getScheme().equals("https") && uri.getHost().equals("android.efforts.trd.client.nx.tsun.moe") && uri.getPath().equals("/oauth/callback")) {
                     Log.d("URL Catch", "Entered URL loading block");
 
+                    url_Code = uri.getQueryParameter("code");
+
+                    requestOAuthToken();
                     return true;
                 }
 
@@ -90,6 +96,7 @@ public class WebViewActivity extends AppCompatActivity implements Response.Error
                 Log.d("URL Loading", "entering depreceated function");
 
                 Uri uri = Uri.parse(url);
+                Log.d("OverrideURL", "YOOHOO 2");
                 if(uri.getScheme().equals("https") && uri.getHost().equals("android.efforts.trd.client.nx.tsun.moe") && uri.getPath().equals("/oauth/callback")) {
                     Log.d("URL Catch", "Entered depreceated URL loading block");
 
