@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:background="?android:attr/selectableItemBackground">
+
+    <!-- Avatar -->
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher"/>
+
+    <!-- Starting Point -->
+    <TextView
+        android:id="@+id/task_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:paddingStart="10dp"
+        android:text="Task Name"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/avatar" />
+
+    <!-- Ending Point -->
+    <TextView
+        android:id="@+id/task_timestamp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/task_name"
+        android:layout_marginTop="1dip"
+        android:textSize="12sp"
+        android:layout_toRightOf="@id/avatar"
+        android:paddingLeft="10dp"
+        android:text="Task Created"/>
+
+    <!-- Distance -->
+    <TextView
+        android:id="@+id/task_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/avatar"
+        android:layout_marginTop="5dp"
+        android:paddingLeft="10dp"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:text="Task Title"/>
+
+    <!-- Start Date -->
+    <TextView
+        android:id="@+id/task_content"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/task_title"
+        android:layout_marginTop="5dp"
+        android:paddingLeft="10dp"
+        android:text="Task Content"/>
+
+    <!-- Available Seat(s) -->
+    <TextView
+        android:id="@+id/task_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="Status"/>
+
+</RelativeLayout>

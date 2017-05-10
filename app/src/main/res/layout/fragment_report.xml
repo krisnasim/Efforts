@@ -1,14 +1,95 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.android.efforts.fragment.ReportFragment">
+    android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textAlignment="center"
-        android:text="Hello report fragment" />
+        tools:context="com.android.efforts.fragment.ReportFragment">
 
-</FrameLayout>
+        <TextView
+            android:text="Judul Laporan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:id="@+id/report_title_label"
+            android:layout_marginStart="35dp" />
+
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="Masukan judul laporan disini"
+            android:ems="10"
+            android:layout_marginTop="12dp"
+            android:id="@+id/report_title_input"
+            android:layout_below="@+id/report_title_label"
+            android:layout_alignStart="@+id/report_title_label" />
+
+        <TextView
+            android:text="Isi Laporan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:id="@+id/report_content_label"
+            android:layout_below="@+id/report_title_input"
+            android:layout_alignStart="@+id/report_title_input"/>
+
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:minHeight="100dp"
+            android:gravity="top"
+            android:hint="Masukan isi laporan disini"
+            android:maxLines="5"
+            android:ems="10"
+            android:layout_marginTop="12dp"
+            android:id="@+id/report_content_input"
+            android:layout_below="@+id/report_content_label"
+            android:layout_alignStart="@+id/report_content_label" />
+
+        <TextView
+            android:text="Foto Laporan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_below="@id/report_content_input"
+            android:id="@+id/report_picture_label"
+            android:layout_alignStart="@+id/report_content_input" />
+
+        <Button
+            android:text="Foto"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/take_picture_report"
+            android:background="@color/colorAccent"
+            android:textColor="#ffffff"
+            android:layout_alignTop="@+id/report_picture_label"
+            android:layout_alignEnd="@+id/report_content_input" />
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="262dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/report_picture_label"
+            android:id="@+id/report_picture"
+            android:layout_alignStart="@+id/report_picture_label" />
+
+        <Button
+            android:text="@string/submit_button_competitor_fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:textColor="#ffffff"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="20dp"
+            android:id="@+id/submit_competitor_btn"
+            android:layout_below="@+id/report_picture"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+</ScrollView>

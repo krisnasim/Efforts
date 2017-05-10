@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:background="?android:attr/selectableItemBackground">
+
+    <!-- Avatar -->
+    <ImageView
+        android:id="@+id/avatar_news"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher"/>
+
+    <!-- Starting Point -->
+    <TextView
+        android:id="@+id/news_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:paddingStart="10dp"
+        android:text="News Title"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/avatar_news" />
+
+    <!-- Ending Point -->
+    <TextView
+        android:id="@+id/news_timestamp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:paddingLeft="10dp"
+        android:text="News Released Time"
+        android:layout_below="@+id/news_title"
+        android:layout_toEndOf="@+id/avatar_news" />
+
+    <!-- Start Date -->
+    <TextView
+        android:id="@+id/news_content"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/avatar_news"
+        android:layout_marginTop="5dp"
+        android:paddingLeft="10dp"
+        android:text="News Content"/>
+
+</RelativeLayout>

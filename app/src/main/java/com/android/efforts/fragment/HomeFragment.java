@@ -82,7 +82,7 @@ public class HomeFragment extends Fragment {
             taskEntries.add(new BarEntry(j+1, taskValueDatas[j]));
         }
 
-        BarDataSet reportDataSet = new BarDataSet(reportEntries, "Report"); // add entries to dataset
+        BarDataSet reportDataSet = new BarDataSet(reportEntries, "Task"); // add entries to dataset
         reportDataSet.setColors(ContextCompat.getColor(getActivity(), R.color.md_amber_500),
                 ContextCompat.getColor(getActivity(), R.color.md_red_500),
                 ContextCompat.getColor(getActivity(), R.color.md_blue_500),
