@@ -12,6 +12,7 @@ public class Task {
     private String taskName;
     private String taskTitle;
     private String taskContent;
+    private String taskStatus;
     private Date taskTimestamp;
     private String taskID;
 
@@ -53,5 +54,13 @@ public class Task {
 
     public void setTaskID(String taskID) {
         this.taskID = taskID;
+    }
+
+    public String getTaskStatus() {
+        return taskStatus;
+    }
+
+    public void setTaskStatus(String taskStatus) {
+        this.taskStatus = taskStatus;
     }
 }

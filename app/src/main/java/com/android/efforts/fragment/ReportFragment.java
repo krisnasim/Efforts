@@ -53,6 +53,8 @@ public class ReportFragment extends Fragment implements Response.ErrorListener, 
         String email = sharedPref.getString("email", "nomail@reply.com");
         token = sharedPref.getString("access_token", "noToken");
 
+        getActivity().setTitle("Report");
+
         try {
             loginWithOAuthNX("email", "pwd");
         } catch (JSONException e) {

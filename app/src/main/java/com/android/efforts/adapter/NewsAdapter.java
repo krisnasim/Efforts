@@ -80,7 +80,8 @@ public class NewsAdapter extends BaseAdapter implements View.OnClickListener {
 
         if(convertView == null) {
             rowView = inflater.inflate(R.layout.news_row_layout, parent, false);
-            holder = new ViewHolder(convertView);
+            holder = new ViewHolder(rowView);
+            rowView.setTag(holder);
         }
         else {
             holder = (ViewHolder) rowView.getTag();

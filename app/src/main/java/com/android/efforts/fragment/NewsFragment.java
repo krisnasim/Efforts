@@ -2,7 +2,6 @@ package com.android.efforts.fragment;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -17,9 +16,11 @@ import com.android.efforts.adapter.NewsAdapter;
 import com.android.efforts.model.News;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class NewsFragment extends Fragment {
 
@@ -43,8 +44,23 @@ public class NewsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_news, container, false);
+        ButterKnife.bind(this, view);
+        getActivity().setTitle("News");
 
+        //get date
+        Date date = new Date(2017, 05, 25, 8, 30);
 
+        //create new forum object
+        News newNews = new News();
+        newNews.setNewsTitle("This is some news title");
+        newNews.setNewsTimestamp(date);
+        newNews.setNewaContent("This is some short content about the news. I hope you understand that not much is happening right here");
+
+        for(int x = 0; x < 6; x++) {
+            newsData.add(newNews);
+        }
+
+        setAdapter();
 
         return view;
     }
@@ -68,6 +84,8 @@ public class NewsFragment extends Fragment {
             news_list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Log.d("log", "news clicked");
+
 //                    for(int a=0; a<forumData.size(); a++) {
 //                        forumData.get(a).getPostID();
 //                    }
