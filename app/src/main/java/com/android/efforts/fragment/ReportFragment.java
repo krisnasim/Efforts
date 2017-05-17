@@ -48,7 +48,7 @@ public class ReportFragment extends Fragment implements Response.ErrorListener, 
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         SharedPreferences sharedPref = getActivity().getSharedPreferences("userCred", Context.MODE_PRIVATE);
-        Log.d("sharedPref", sharedPref.getString("jwt", "NoToken"));
+        //Log.d("sharedPref", sharedPref.getString("jwt", "NoToken"));
         String fullName = sharedPref.getString("full_name", "John Did");
         String email = sharedPref.getString("email", "nomail@reply.com");
         token = sharedPref.getString("access_token", "noToken");
@@ -133,18 +133,18 @@ public class ReportFragment extends Fragment implements Response.ErrorListener, 
         //jsonObj.put("auth", insideJsonObj);
 
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        //CustomJSONObjectRequest customJSONReq = new CustomJSONObjectRequest(Request.Method.POST, url, jsonObj, params, headers, this, this);
+        CustomJSONObjectRequest customJSONReq = new CustomJSONObjectRequest(Request.Method.POST, url, jsonObj, params, headers, this, this);
         //ProtoBufRequest testReq = new ProtoBufRequest(Request.Method.POST, url, params, asd, this, this);
 
-    //        try {
-    //            //Map<String, String> testH = jsObjRequest.getHeaders();
-    //            //Log.d("headers",testH.get("Content-Type"));
-    //            Log.d("headers", String.valueOf(customJSONReq.getHeaders()));
-    //            Log.d("content", jsonObj.toString(2));
-    //        } catch (AuthFailureError authFailureError) {
-    //            authFailureError.printStackTrace();
-    //        }
-    //
-    //        requestQueue.add(customJSONReq);
+            try {
+                //Map<String, String> testH = jsObjRequest.getHeaders();
+                //Log.d("headers",testH.get("Content-Type"));
+                Log.d("headers", String.valueOf(customJSONReq.getHeaders()));
+                Log.d("content", jsonObj.toString(2));
+            } catch (AuthFailureError authFailureError) {
+                authFailureError.printStackTrace();
+            }
+
+            requestQueue.add(customJSONReq);
     }
 }
