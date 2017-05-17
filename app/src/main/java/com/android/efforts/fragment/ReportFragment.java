@@ -28,6 +28,8 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
+import moe.tsun.nx.api.NxFormProto;
+
 public class ReportFragment extends Fragment implements Response.ErrorListener, Response.Listener<JSONObject> {
 
     String token = "";
@@ -132,9 +134,12 @@ public class ReportFragment extends Fragment implements Response.ErrorListener, 
         //JSONObject jsonObj = new JSONObject();
         //jsonObj.put("auth", insideJsonObj);
 
+        //CUSTOM SAMPLE FOR NXFORMPROTOBUF
+        //NxFormProto test = new NxFormProto();
+
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         CustomJSONObjectRequest customJSONReq = new CustomJSONObjectRequest(Request.Method.POST, url, jsonObj, params, headers, this, this);
-        //ProtoBufRequest testReq = new ProtoBufRequest(Request.Method.POST, url, params, asd, this, this);
+        //ProtoBufRequest testReq = new ProtoBufRequest(Request.Method.POST, url, params, Response<JSONObject>, this, this);
 
             try {
                 //Map<String, String> testH = jsObjRequest.getHeaders();

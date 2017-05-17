@@ -21,16 +21,16 @@ import java.util.Map;
 /**
  * Created by carson@convox.org on 5/10/15.
  */
-public class ProtoBufRequest<ReqT extends Message, RespT extends Message> extends Request<RespT> {
+public class ProtoBufRequest<ReqT extends Message, JSONObject extends Message> extends Request<JSONObject> {
 
     private ReqT request;
-    private final Class<RespT> responseType;
-    private final Listener<RespT> listener;
+    private final Class<JSONObject> responseType;
+    private final Listener<JSONObject> listener;
     private static final String PROTOCOL_CONTENT_TYPE = "application/x-protobuf";
     private static final int SOCKET_TIMEOUT = 30000;
 
-    public ProtoBufRequest(int method, String url, ReqT data, Class<RespT> responseType,
-                           Listener<RespT> listener, Response.ErrorListener errorListener) {
+    public ProtoBufRequest(int method, String url, ReqT data, Class<JSONObject> responseType,
+                           Listener<JSONObject> listener, Response.ErrorListener errorListener) {
         super(method, url, errorListener);
         this.listener = listener;
         this.request = data;
@@ -57,13 +57,13 @@ public class ProtoBufRequest<ReqT extends Message, RespT extends Message> extend
 
 
     @Override
-    protected Response<RespT> parseNetworkResponse(NetworkResponse response) {
+    protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
         try {
             if (responseType == null) {
                 throw new IllegalArgumentException("The response type was never provided.");
             }
-            RespT responseInstance = responseType.newInstance();
-            return (Response<RespT>) Response.success(
+            JSONObject responseInstance = responseType.newInstance();
+            return (Response<JSONObject>) Response.success(
                     responseInstance.newBuilderForType().mergeFrom(response.data).build(),
                     HttpHeaderParser.parseCacheHeaders(response));
         } catch (Exception e) {
@@ -85,7 +85,7 @@ public class ProtoBufRequest<ReqT extends Message, RespT extends Message> extend
     }
 
     @Override
-    protected void deliverResponse(RespT response) {
+    protected void deliverResponse(JSONObject response) {
         listener.onResponse(response);
     }
 }
