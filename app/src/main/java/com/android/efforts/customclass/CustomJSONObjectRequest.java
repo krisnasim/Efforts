@@ -39,7 +39,6 @@ public class CustomJSONObjectRequest extends JsonObjectRequest {
         this.headers = headers;
     }
 
-
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
         //HashMap<String, String> headers = new HashMap<String, String>();

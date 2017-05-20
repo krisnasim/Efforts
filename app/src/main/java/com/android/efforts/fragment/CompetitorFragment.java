@@ -31,12 +31,16 @@ import android.widget.Toast;
 
 import com.android.efforts.R;
 import com.android.efforts.activity.HomeActivity;
+import com.android.efforts.customclass.ProtoBufRequest;
 import com.android.efforts.customclass.VolleyMultipartRequest;
 import com.android.efforts.customclass.VolleySingleton;
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,13 +62,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import id.zelory.compressor.Compressor;
 import id.zelory.compressor.FileUtil;
+import moe.tsun.nx.api.NxFormProto;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 import static android.app.Activity.RESULT_OK;
 
-public class CompetitorFragment extends Fragment implements Response.ErrorListener {
+public class CompetitorFragment extends Fragment implements Response.Listener<NxFormProto.QrDatum>, Response.ErrorListener {
 
     @BindView(R.id.info_competitor_input)
     EditText info_competitor_input;
@@ -105,9 +110,11 @@ public class CompetitorFragment extends Fragment implements Response.ErrorListen
             Toast.makeText(getActivity(), "Anda belum memasukan nama program!", Toast.LENGTH_SHORT).show();
         } else if(compInput.matches("")) {
             Toast.makeText(getActivity(), "Anda belum memasukan detil program!", Toast.LENGTH_SHORT).show();
-        } else if(imageByte == null) {
-            Toast.makeText(getActivity(), "Anda belum mamasukan foto program!", Toast.LENGTH_SHORT).show();
-        } else if(storeName.matches("")) {
+        }
+//        else if(imageByte == null) {
+//            Toast.makeText(getActivity(), "Anda belum mamasukan foto program!", Toast.LENGTH_SHORT).show();
+//        }
+        else if(storeName.matches("")) {
             Toast.makeText(getActivity(), "Anda belum memasukan nama toko!", Toast.LENGTH_SHORT).show();
         } else if(storeBrand.matches("")) {
             Toast.makeText(getActivity(), "Anda belum memasukan nama merk produk!", Toast.LENGTH_SHORT).show();
@@ -117,8 +124,8 @@ public class CompetitorFragment extends Fragment implements Response.ErrorListen
             Toast.makeText(getActivity(), "Anda belum memasukan tanggal akhir program!", Toast.LENGTH_SHORT).show();
         } else {
             final SharedPreferences sharedPref = getActivity().getSharedPreferences("userCred", Context.MODE_PRIVATE);
-            Log.d("SharedPref", sharedPref.getString("jwt", "NoToken"));
-            String token = sharedPref.getString("jwt", "empty token");
+            Log.d("SharedPref", sharedPref.getString("access_token", "NoToken"));
+            String token = sharedPref.getString("access_token", "empty token");
 
             submit_competitor_btn.setEnabled(false);
             progressDialog = new ProgressDialog(getActivity(), R.style.CustomDialog);
@@ -128,68 +135,101 @@ public class CompetitorFragment extends Fragment implements Response.ErrorListen
             progressDialog.setMessage("Mohon tunggu...");
             progressDialog.show();
 
-            String url = getString(R.string.create_issue);
+            //String url = getString(R.string.create_issue);
+            String url = "https://form.nx.tsun.moe/r/api/v1/forms/3211147815576659998/data";
 
             //set headers
             Map<String, String> headers = new HashMap<>();
-            headers.put("Content-Type", "multipart/form-data");
-            headers.put("Authorization", token);
+            headers.put("Charset", "UTF-8");
+            headers.put("Content-Type", "application/x-protobuf");
+            headers.put("Accept", "application/x-protobuf,application/json");
+            headers.put("Authorization", "Bearer "+token);
 
-            VolleyMultipartRequest newReq = new VolleyMultipartRequest(url, headers, new Response.Listener<NetworkResponse>() {
-                @Override
-                public void onResponse(NetworkResponse response) {
-                    String resultResponse = new String(response.data);
-                    try {
-                        progressDialog.dismiss();
-                        submit_competitor_btn.setEnabled(true);
-                        JSONObject result = new JSONObject(resultResponse);
-                        Log.d("JSONResult", "result: " + result.toString(2));
-                        Toast.makeText(getActivity(), "Pencatatan kompetitor berhasil!", Toast.LENGTH_SHORT).show();
-                        //change fragment
-                        //change fragment
-                        String level = sharedPref.getString("level", "NoLevel");
-                        if(level.equals("sales_representative") || level.equals("area_manager") || level.equals("promoter") || level.equals("admin")) {
-                            //HomeActivity act = (HomeActivity) getActivity();
-                            //act.changeFragment(new HomeFragment());
-                        } else if(level.equals("merchandiser")) {
-                            //HomeMDSActivity act = (HomeMDSActivity) getActivity();
-                            //act.changeFragment(new HomeMDSFragment());
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }, this) {
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> params = new HashMap<>();
-                    params.put("remark", info_competitor_input.getText().toString());
-                    params.put("store_name", info_store_name_input.getText().toString());
-                    params.put("brand_name", info_brand_name_input.getText().toString());
-                    params.put("program_name", info_program_name_input.getText().toString());
-                    params.put("campaign_start", start_date_competitor_input.getText().toString());
-                    params.put("campaign_end", end_date_competitor_input.getText().toString());
-                    params.put("store_id", sharedPref.getString("store_id", "NoID"));
+            JSONObject jsonObj = new JSONObject();
+            try {
+                jsonObj.put("title", "this is competitor report");
+                jsonObj.put("description", compInput);
+                jsonObj.put("store_name", storeName);
+                jsonObj.put("brand_name", storeBrand);
+                jsonObj.put("program_name", progName);
+                jsonObj.put("campaign_start", startDate);
+                jsonObj.put("campaign_end", endDate);
+                JSONObject photo = new JSONObject();
+                photo.put("path", "http://images4.fanpop.com/image/photos/19000000/k-on-animelover97-19099870-2000-1370.jpg");
+                photo.put("contentType", "image/jpg");
+                photo.put("name", "K-ON_is_love");
+                photo.put("description", "kawaii");
+                jsonObj.put("photo", photo);
 
-                    Log.d("parameters", info_competitor_input.getText().toString());
-                    Log.d("parameters", info_store_name_input.getText().toString());
-                    Log.d("parameters", info_brand_name_input.getText().toString());
-                    Log.d("parameters", info_program_name_input.getText().toString());
-                    Log.d("parameters", start_date_competitor_input.getText().toString());
-                    Log.d("parameters", end_date_competitor_input.getText().toString());
-                    Log.d("parameters", sharedPref.getString("store_id", "NoID"));
-                    return params;
-                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
-                @Override
-                protected Map<String, DataPart> getByteData() throws AuthFailureError {
-                    Map<String, DataPart> params = new HashMap<>();
-                    params.put("photo_name", new DataPart("comp.jpg", imageByte, "image/jpeg"));
+            NxFormProto.OpDatum testDatum = null;
+            try {
+                testDatum = NxFormProto.OpDatum.newBuilder().setFormId(3211147815576659998L).setContent(jsonObj.toString(2)).build();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
-                    return params;
-                }
-            };
-            VolleySingleton.getInstance(getContext()).addToRequestQueue(newReq);
+            RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+            ProtoBufRequest<NxFormProto.OpDatum, NxFormProto.QrDatum> testReq = new ProtoBufRequest<>(Request.Method.POST, url, testDatum, NxFormProto.QrDatum.class, headers, this, this);
+            requestQueue.add(testReq);
+//            VolleyMultipartRequest newReq = new VolleyMultipartRequest(url, headers, new Response.Listener<NetworkResponse>() {
+//                @Override
+//                public void onResponse(NetworkResponse response) {
+//                    String resultResponse = new String(response.data);
+//                    try {
+//                        progressDialog.dismiss();
+//                        submit_competitor_btn.setEnabled(true);
+//                        JSONObject result = new JSONObject(resultResponse);
+//                        Log.d("JSONResult", "result: " + result.toString(2));
+//                        Toast.makeText(getActivity(), "Pencatatan kompetitor berhasil!", Toast.LENGTH_SHORT).show();
+//                        //change fragment
+//                        //change fragment
+//                        String level = sharedPref.getString("level", "NoLevel");
+//                        if(level.equals("sales_representative") || level.equals("area_manager") || level.equals("promoter") || level.equals("admin")) {
+//                            //HomeActivity act = (HomeActivity) getActivity();
+//                            //act.changeFragment(new HomeFragment());
+//                        } else if(level.equals("merchandiser")) {
+//                            //HomeMDSActivity act = (HomeMDSActivity) getActivity();
+//                            //act.changeFragment(new HomeMDSFragment());
+//                        }
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }, this) {
+//                @Override
+//                protected Map<String, String> getParams() throws AuthFailureError {
+//                    Map<String, String> params = new HashMap<>();
+//                    params.put("remark", info_competitor_input.getText().toString());
+//                    params.put("store_name", info_store_name_input.getText().toString());
+//                    params.put("brand_name", info_brand_name_input.getText().toString());
+//                    params.put("program_name", info_program_name_input.getText().toString());
+//                    params.put("campaign_start", start_date_competitor_input.getText().toString());
+//                    params.put("campaign_end", end_date_competitor_input.getText().toString());
+//                    params.put("store_id", sharedPref.getString("store_id", "NoID"));
+//
+//                    Log.d("parameters", info_competitor_input.getText().toString());
+//                    Log.d("parameters", info_store_name_input.getText().toString());
+//                    Log.d("parameters", info_brand_name_input.getText().toString());
+//                    Log.d("parameters", info_program_name_input.getText().toString());
+//                    Log.d("parameters", start_date_competitor_input.getText().toString());
+//                    Log.d("parameters", end_date_competitor_input.getText().toString());
+//                    Log.d("parameters", sharedPref.getString("store_id", "NoID"));
+//                    return params;
+//                }
+//
+//                @Override
+//                protected Map<String, DataPart> getByteData() throws AuthFailureError {
+//                    Map<String, DataPart> params = new HashMap<>();
+//                    params.put("photo_name", new DataPart("comp.jpg", imageByte, "image/jpeg"));
+//
+//                    return params;
+//                }
+//            };
+//            VolleySingleton.getInstance(getContext()).addToRequestQueue(newReq);
         }
     }
 
@@ -324,6 +364,18 @@ public class CompetitorFragment extends Fragment implements Response.ErrorListen
 //            }
 //            competitor_picture.setImageBitmap(imageBitmap);
             setPic();
+        }
+    }
+
+    @Override
+    public void onResponse(NxFormProto.QrDatum response) {
+        String bodyResult = "";
+        progressDialog.dismiss();
+        try {
+            Log.d("onResponse", response.toString());
+            //bodyResult = JWTUtils.decoded(String.valueOf(response));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

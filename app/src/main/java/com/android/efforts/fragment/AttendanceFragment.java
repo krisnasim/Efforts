@@ -31,6 +31,7 @@ import com.android.efforts.R;
 import com.android.efforts.activity.HomeActivity;
 import com.android.efforts.activity.QRCodeActivity;
 import com.android.efforts.customclass.CustomRequest;
+import com.android.efforts.customclass.ProtoBufRequest;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -45,17 +46,21 @@ import com.google.android.gms.location.LocationServices;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import moe.tsun.nx.api.NxCommonProto;
+import moe.tsun.nx.api.NxFormProto;
 
-public class AttendanceFragment extends Fragment implements Response.ErrorListener, Response.Listener<JSONObject>, GoogleApiClient.ConnectionCallbacks,
+public class AttendanceFragment extends Fragment implements Response.ErrorListener, Response.Listener<NxFormProto.QrDatum>, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
 
     private String qrCodeRes;
@@ -103,11 +108,11 @@ public class AttendanceFragment extends Fragment implements Response.ErrorListen
             Toast.makeText(getActivity(), "Mohon tunggu sementara kami mengumpulkan informasi lokasi Anda", Toast.LENGTH_SHORT).show();
         }
         else {
-            if(qrCodeRes == null) {
-                //cannot proceed if qr code has not been scanned yet
-                Toast.makeText(getActivity(), "Kami tidak bisa mengirim data karena anda belum memindai QR Code toko. Silahkan pindai terlebih dahulu", Toast.LENGTH_SHORT).show();
-            }
-            else {
+//            if(qrCodeRes == null) {
+//                //cannot proceed if qr code has not been scanned yet
+//                Toast.makeText(getActivity(), "Kami tidak bisa mengirim data karena anda belum memindai QR Code toko. Silahkan pindai terlebih dahulu", Toast.LENGTH_SHORT).show();
+//            }
+//            else {
                 progressDialog = new ProgressDialog(getActivity(), R.style.CustomDialog);
                 progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 progressDialog.setIndeterminate(true);
@@ -116,9 +121,11 @@ public class AttendanceFragment extends Fragment implements Response.ErrorListen
                 progressDialog.show();
 
                 sharedPref = getActivity().getSharedPreferences("userCred", Context.MODE_PRIVATE);
-                Log.d("SharedPref", sharedPref.getString("jwt", "NoToken"));
-                String token = sharedPref.getString("jwt", "empty token");
-                String url = getString(R.string.create_attendance);
+                Log.d("SharedPref", sharedPref.getString("access_token", "NoToken"));
+                String token = sharedPref.getString("access_token", "noToken");
+                //String url = getString(R.string.create_attendance);
+                //NEW URL FOR NX PLATFORM. THE OLD URL CAN BE SEEN ON REPORT FRAGMENT TEST
+                String url = "https://form.nx.tsun.moe/r/api/v1/forms/3211115590204254227/data";
                 int position = attendance_type.getSelectedItemPosition();
                 Log.d("attendancePos", String.valueOf(position));
 
@@ -137,39 +144,69 @@ public class AttendanceFragment extends Fragment implements Response.ErrorListen
 
                 //set headers
                 Map<String, String> headers = new HashMap<>();
-                headers.put("Content-Type", "application/x-www-form-urlencoded");
-                headers.put("Authorization", token);
+                headers.put("Charset", "UTF-8");
+                headers.put("Content-Type", "application/x-protobuf");
+                headers.put("Accept", "application/x-protobuf,application/json");
+                headers.put("Authorization", "Bearer "+token);
                 //set params
-                HashMap<String, String> params = new HashMap<>();
-                params.put("absence_type", position+"");
-                //params.put("latitude", currentLocation.getLatitude()+"");
-                //params.put("longitude", currentLocation.getLongitude()+"");
-                params.put("latitude", mLastLocation.getLatitude()+"");
-                params.put("longitude", mLastLocation.getLongitude()+"");
-                params.put("store_uid", qrCodeRes);
-//                params.put("store_uid", "STR-139");
-                if(!remark_attendance_input.getText().toString().matches("")) {
-                    //this condition is to check whether the text box is filled or not
-                    params.put("remark", remark_attendance_input.getText().toString());
-                    Log.d("Attendance", "the remark column is filled");
-                } else {
-                    Log.d("Attendance", "the remark column is empty");
-                }
+                JSONObject jsonObjAtt = new JSONObject();
+                JSONObject jsonObjAbs = new JSONObject();
+            try {
+                jsonObjAbs.put("status", "MASUK");
+                jsonObjAbs.put("remark", remark_attendance_input.getText().toString());
+
+                JSONObject jsonObjLoc = new JSONObject();
+                jsonObjLoc.put("type", "Point");
+                ArrayList<Double> list = new ArrayList<Double>();
+                list.add(mLastLocation.getLongitude());
+                list.add(mLastLocation.getLatitude());
+                jsonObjLoc.put("coordinates", new JSONArray(list));
+
+                jsonObjAtt.put("absent", jsonObjAbs);
+                jsonObjAtt.put("location", jsonObjLoc);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            NxFormProto.OpDatum testDatum = null;
+            try {
+                testDatum = NxFormProto.OpDatum.newBuilder().setFormId(3211115590204254227L).setContent(jsonObjAtt.toString(2)).build();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+//                HashMap<String, String> params = new HashMap<>();
+//                params.put("absence_type", position+"");
+//                //params.put("latitude", currentLocation.getLatitude()+"");
+//                //params.put("longitude", currentLocation.getLongitude()+"");
+//                params.put("latitude", mLastLocation.getLatitude()+"");
+//                params.put("longitude", mLastLocation.getLongitude()+"");
+//                params.put("store_uid", qrCodeRes);
+////                params.put("store_uid", "STR-139");
+//                if(!remark_attendance_input.getText().toString().matches("")) {
+//                    //this condition is to check whether the text box is filled or not
+//                    params.put("remark", remark_attendance_input.getText().toString());
+//                    Log.d("Attendance", "the remark column is filled");
+//                } else {
+//                    Log.d("Attendance", "the remark column is empty");
+//                }
 
                 RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-                CustomRequest jsObjRequest = new CustomRequest(Request.Method.POST, url, params, this, this);
-                jsObjRequest.setHeaders(headers);
+            ProtoBufRequest<NxFormProto.OpDatum, NxFormProto.QrDatum> testReq = new ProtoBufRequest<>(Request.Method.POST, url, testDatum, NxFormProto.QrDatum.class, headers, this, this);
+//                CustomRequest jsObjRequest = new CustomRequest(Request.Method.POST, url, params, this, this);
+//                jsObjRequest.setHeaders(headers);
 
-                try {
-                    Map<String, String> test = jsObjRequest.getHeaders();
-                    Log.d("headers", test.get("Content-Type"));
-                    Log.d("headers", test.get("Authorization"));
-                } catch (AuthFailureError authFailureError) {
-                    authFailureError.printStackTrace();
-                }
+//                try {
+//                    Map<String, String> test = jsObjRequest.getHeaders();
+//                    Log.d("headers", test.get("Content-Type"));
+//                    Log.d("headers", test.get("Authorization"));
+//                } catch (AuthFailureError authFailureError) {
+//                    authFailureError.printStackTrace();
+//                }
                 //send the request
-                requestQueue.add(jsObjRequest);
-            }
+//                requestQueue.add(jsObjRequest);
+        requestQueue.add(testReq);
+//            }
         }
     }
 
@@ -301,42 +338,55 @@ public class AttendanceFragment extends Fragment implements Response.ErrorListen
     @Override
     public void onErrorResponse(VolleyError error) {
         progressDialog.dismiss();
-        Log.d("onErrorResponse", "JSON Response: " + error);
-        Log.d("onErrorResponse", "JSON Error: "+error.getLocalizedMessage());
-        Log.d("onErrorResponse", "JSON Error: "+error.getMessage());
+//        Log.d("onErrorResponse", "JSON Response: " + error);
+//        Log.d("onErrorResponse", "JSON Error: "+error.getLocalizedMessage());
+//        Log.d("onErrorResponse", "JSON Error: "+error.getMessage());
+        try {
+            Log.d("errorResponse", String.valueOf(error));
+            Log.d("errorHeader", String.valueOf(error.networkResponse.headers));
+            //Log.d("errorResponse", String.valueOf(error.networkResponse.data));
+            Log.d("errorResponseData", new String(error.networkResponse.data));
+            NxCommonProto.SpringError err = NxCommonProto.SpringError.parseFrom(error.networkResponse.data);
+//            Log.d("errorResponse", err.getErrorMap().toString());
+            //onLoginFailed();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d("errorResponse", "FUCK THIS SHIT!!!!");
+        }
     }
 
     @Override
-    public void onResponse(JSONObject response) {
+    public void onResponse(NxFormProto.QrDatum response) {
         //set string var for store id
         String store_id = "";
         progressDialog.dismiss();
-        try {
-            Log.d("onResponse", "JSON Response: " + response.toString(2));
-            JSONObject storeObj = response.getJSONObject("data").getJSONObject("store");
-            Log.d("storeObj", storeObj.getString("id"));
-            store_id = storeObj.getString("id");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        //add store id to shared preferences
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("store_id", store_id);
-        editor.apply();
-        Toast.makeText(getActivity(), "Absen berhasil!", Toast.LENGTH_LONG).show();
-        //change fragment
-        String level = sharedPref.getString("level", "NoLevel");
-        //remove location updates
-        if(locManager != null) {
-            locManager.removeUpdates(locListener);
-        }
-        if(level.equals("sales_representative") || level.equals("area_manager") || level.equals("promoter") || level.equals("admin")) {
-            //HomeActivity act = (HomeActivity) getActivity();
-            //act.changeFragment(new HomeFragment());
-        } else if(level.equals("merchandiser")) {
-            //HomeMDSActivity act = (HomeMDSActivity) getActivity();
-            //act.changeFragment(new HomeMDSFragment());
-        }
+        Log.d("onResponse", "JSON Response: " + response.toString());
+//        try {
+//            Log.d("onResponse", "JSON Response: " + response.toString(2));
+//            JSONObject storeObj = response.getJSONObject("data").getJSONObject("store");
+//            Log.d("storeObj", storeObj.getString("id"));
+//            store_id = storeObj.getString("id");
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        //add store id to shared preferences
+//        SharedPreferences.Editor editor = sharedPref.edit();
+//        editor.putString("store_id", store_id);
+//        editor.apply();
+//        Toast.makeText(getActivity(), "Absen berhasil!", Toast.LENGTH_LONG).show();
+//        //change fragment
+//        String level = sharedPref.getString("level", "NoLevel");
+//        //remove location updates
+//        if(locManager != null) {
+//            locManager.removeUpdates(locListener);
+//        }
+//        if(level.equals("sales_representative") || level.equals("area_manager") || level.equals("promoter") || level.equals("admin")) {
+//            //HomeActivity act = (HomeActivity) getActivity();
+//            //act.changeFragment(new HomeFragment());
+//        } else if(level.equals("merchandiser")) {
+//            //HomeMDSActivity act = (HomeMDSActivity) getActivity();
+//            //act.changeFragment(new HomeMDSFragment());
+//        }
 //        HomeSRActivity act = (HomeSRActivity) getActivity();
 //        act.changeFragment(new HomeFragment());
 
