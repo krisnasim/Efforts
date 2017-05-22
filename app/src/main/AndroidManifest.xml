@@ -23,6 +23,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.android.efforts.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"></meta-data>
+        </provider>
         <activity
             android:name=".activity.SplashActivity"
             android:theme="@style/NoActionBar">
@@ -35,8 +44,12 @@
         <activity
             android:name=".activity.LoginActivity"
             android:theme="@style/NoActionBar" />
-        <activity android:name=".activity.BarcodeActivity" />
-        <activity android:name=".activity.QRCodeActivity" />
+        <activity
+            android:name=".activity.BarcodeActivity"
+            android:theme="@style/NoActionBar"/>
+        <activity
+            android:name=".activity.QRCodeActivity"
+            android:theme="@style/NoActionBar"/>
         <activity
             android:name=".activity.HomeActivity"
             android:theme="@style/NoActionBar" />

@@ -361,6 +361,12 @@ public class AttendanceFragment extends Fragment implements Response.ErrorListen
         String store_id = "";
         progressDialog.dismiss();
         Log.d("onResponse", "JSON Response: " + response.toString());
+
+        Toast.makeText(getActivity(), "Absen berhasil!", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(getActivity(), HomeActivity.class);
+        startActivity(intent);
+        getActivity().finish();
+
 //        try {
 //            Log.d("onResponse", "JSON Response: " + response.toString(2));
 //            JSONObject storeObj = response.getJSONObject("data").getJSONObject("store");

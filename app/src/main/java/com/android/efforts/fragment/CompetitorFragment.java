@@ -90,12 +90,16 @@ public class CompetitorFragment extends Fragment implements Response.Listener<Nx
     private String mCurrentPhotoPath;
     private int imageWidth;
     private int imageHeight;
+    private String image_url;
+    private String token;
+    private Bitmap testPhoto;
     private int PICK_IMAGE_REQUEST = 1;
     private static final int REQUEST_IMAGE_CAPTURE = 2;
     private DatePickerDialog.OnDateSetListener startDateListener;
     private DatePickerDialog.OnDateSetListener endDateListener;
     private EditText currentDateInput;
     private ProgressDialog progressDialog;
+    private SharedPreferences sharedPref;
 
     @OnClick(R.id.submit_competitor_btn)
     public void submitIssue() {
@@ -123,7 +127,8 @@ public class CompetitorFragment extends Fragment implements Response.Listener<Nx
         } else if(endDate.matches("")) {
             Toast.makeText(getActivity(), "Anda belum memasukan tanggal akhir program!", Toast.LENGTH_SHORT).show();
         } else {
-            final SharedPreferences sharedPref = getActivity().getSharedPreferences("userCred", Context.MODE_PRIVATE);
+//            final SharedPreferences sharedPref = getActivity().getSharedPreferences("userCred", Context.MODE_PRIVATE);
+//            token  = sharedPref.getString("access_token", "NoToken");
             Log.d("SharedPref", sharedPref.getString("access_token", "NoToken"));
             String token = sharedPref.getString("access_token", "empty token");
 
@@ -155,7 +160,7 @@ public class CompetitorFragment extends Fragment implements Response.Listener<Nx
                 jsonObj.put("campaign_start", startDate);
                 jsonObj.put("campaign_end", endDate);
                 JSONObject photo = new JSONObject();
-                photo.put("path", "http://images4.fanpop.com/image/photos/19000000/k-on-animelover97-19099870-2000-1370.jpg");
+                photo.put("path", image_url);
                 photo.put("contentType", "image/jpg");
                 photo.put("name", "K-ON_is_love");
                 photo.put("description", "kawaii");
@@ -276,6 +281,8 @@ public class CompetitorFragment extends Fragment implements Response.Listener<Nx
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_competitor, container, false);
         ButterKnife.bind(this, view);
+        sharedPref = getActivity().getSharedPreferences("userCred", Context.MODE_PRIVATE);
+        token  = sharedPref.getString("access_token", "NoToken");
         //currentDateInput = (EditText) view.findViewById(R.id.currentDateCompInput);
 
         //setting up editText for Date not editable
@@ -374,6 +381,11 @@ public class CompetitorFragment extends Fragment implements Response.Listener<Nx
         try {
             Log.d("onResponse", response.toString());
             //bodyResult = JWTUtils.decoded(String.valueOf(response));
+
+            Toast.makeText(getActivity(), "Laporan kompetitor berhasil!", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(getActivity(), HomeActivity.class);
+            startActivity(intent);
+            getActivity().finish();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -386,6 +398,37 @@ public class CompetitorFragment extends Fragment implements Response.Listener<Nx
         submit_competitor_btn.setEnabled(true);
         Log.d("ErrorResponse", "Error response: "+error.getMessage());
         Log.d("ErrorResponse", "Error response: "+error.getLocalizedMessage());
+    }
+
+    private void uploadImageNX(Bitmap bm) {
+        String url = "https://form.nx.tsun.moe/r/api/v1/assets/3211146650761816089";
+        Log.d("NXServer", "Entering NX Asset Platform...");
+        Log.d("NXServer", url);
+
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Charset", "UTF-8");
+        headers.put("Content-Type", "image/jpg");
+        headers.put("Accept", "application/x-protobuf,application/json");
+        headers.put("Authorization", "Bearer "+token);
+        Log.d("token", token);
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        ProtoBufRequest<NxFormProto.OpDatum, NxFormProto.QrAttachment> testReq = new ProtoBufRequest<>(Request.Method.POST, url, bm, NxFormProto.QrAttachment.class, headers, new Response.Listener<NxFormProto.QrAttachment>() {
+            @Override
+            public void onResponse(NxFormProto.QrAttachment response) {
+                String bodyResult = "";
+                try {
+                    Log.d("onResponse", response.toString());
+                    Log.d("code", response.getCode());
+                    image_url = "https://form.nx.tsun.moe/r/api/v1/assets/"+response.getCode();
+                    //bodyResult = JWTUtils.decoded(String.valueOf(response));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, this);
+
+        requestQueue.add(testReq);
     }
 
     private void initiateDateListeners() {
@@ -435,7 +478,7 @@ public class CompetitorFragment extends Fragment implements Response.Listener<Nx
             // Continue only if the File was successfully created
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(getActivity(),
-                        "com.example.android.fileprovider",
+                        "com.android.efforts.fileprovider",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
@@ -603,5 +646,7 @@ public class CompetitorFragment extends Fragment implements Response.Listener<Nx
             e.printStackTrace();
         }
 
+        //upload the image
+        uploadImageNX(testPhoto);
     }
 }
