@@ -15,15 +15,30 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.efforts.R;
+import com.android.efforts.customclass.CustomRequest;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationSettingsResult;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -209,60 +224,176 @@ public class SplashActivity extends AppCompatActivity implements DialogInterface
             @Override
             public void run() {
                 //check for sharedPreferences before deciding which activity to go
-                //checkforSharedPreferences();
+                checkforSharedPreferences();
                 //instead call the intent here. dont check preferences first
                 //Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                //startActivity(intent);
             }
         }, SPLASH_TIME_OUT);
     }
 
     private void checkforSharedPreferences() {
         SharedPreferences sharedPref = this.getSharedPreferences("userCred", Context.MODE_PRIVATE);
-        String token = sharedPref.getString("jwt", "empty token");
-        String level = sharedPref.getString("level", "empty level");
+        String token = sharedPref.getString("access_token", "empty token");
+        //String level = sharedPref.getString("level", "empty level");
         //Log.d("tokenPrint", token);
         if(token.matches("empty token")) {
             //well, no user is logged in. go to login activity
-            //Intent intent = new Intent(this, LoginActivity.class);
-            //startActivity(intent);
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
             finish();
         } else {
             //get the expired timestamp in epoch
-            String expired = sharedPref.getString("expired_timestamp", "empty");
-            long expired_con = Long.parseLong(expired);
-            long currentTime = System.currentTimeMillis() / 1000L;
+            long expired = sharedPref.getLong("expires_in", 0);
+            long currentTime = System.currentTimeMillis();
+            //long expired_con = Long.parseLong(expired) + currentTime;
             //currentTime = currentTime + 100000;
             Log.d("currentDate", String.valueOf(currentTime));
-            Log.d("expiredDate", String.valueOf(expired_con));
+            Log.d("expiredDate", String.valueOf(expired));
 
-            if(currentTime > expired_con) {
+            if(currentTime > expired) {
                 //the token is expired. user must logged in again
-                Toast.makeText(this, "Sesi anda telah habis. Silahkan login kembali", Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, "Sesi anda telah habis. Silahkan login kembali", Toast.LENGTH_LONG).show();
+
+                //let's try refresh the token
+                refreshOAuthToken();
+
                 //clear all shared preferences first
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.clear();
-                editor.apply();
+                //SharedPreferences.Editor editor = sharedPref.edit();
+                //editor.clear();
+                //editor.apply();
+
                 //get out from here
-                //Intent intent = new Intent(this, LoginActivity.class);
-                //startActivity(intent);
-                finish();
+//                Intent intent = new Intent(this, LoginActivity.class);
+//                startActivity(intent);
+//                finish();
             }
             else {
                 //no login required. GO AWAY FROM HERE
                 //but wait. check which level is the user. don't just throw them into wrong level
-                if(level.equals("sales_representative") || level.equals("area_manager") || level.equals("promoter") || level.equals("admin")) {
-                    //Intent intent = new Intent(this, HomeSRActivity.class);
-                    //startActivity(intent);
-                    finish();
-                }
-                else if (level.equals("merchandiser"))  {
-                    //Intent intent = new Intent(this, HomeMDSActivity.class);
-                    //startActivity(intent);
-                    finish();
-                }
+//                if(level.equals("sales_representative") || level.equals("area_manager") || level.equals("promoter") || level.equals("admin")) {
+//                    //Intent intent = new Intent(this, HomeSRActivity.class);
+//                    //startActivity(intent);
+//                    finish();
+//                }
+//                else if (level.equals("merchandiser"))  {
+//                    //Intent intent = new Intent(this, HomeMDSActivity.class);
+//                    //startActivity(intent);
+//                    finish();
+//                }
+
+                Log.d("loginStatus", "someone has logged in!");
+                Intent intent = new Intent(this, HomeActivity.class);
+                startActivity(intent);
+                finish();
             }
         }
+    }
+
+    private void refreshOAuthToken() {
+        String url = "https://id.nx.tsun.moe/oauth/token";
+        //String token = "";
+        //prepare the clientID and clientSecret
+        String clientID = getResources().getString(R.string.client_id);
+        String clientSecret = getResources().getString(R.string.client_secret);
+        String combinedKey = clientID+":"+clientSecret;
+
+        //convert the combinedKey to Base64
+        byte[] convertedKey = new byte[0];
+        try {
+            convertedKey = combinedKey.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        String encodedKey = Base64.encodeToString(convertedKey, Base64.NO_WRAP);
+        Log.d("encoded64Res", encodedKey);
+        String finalKey = "Basic "+encodedKey;
+
+        SharedPreferences sharedPref = this.getSharedPreferences("userCred", Context.MODE_PRIVATE);
+        String token = finalKey;
+        String refresh = sharedPref.getString("refresh_token", "empty token");
+
+//        try {
+//            token = requestAuthorization();
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+
+        //set headers
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/x-www-form-urlencoded");
+        headers.put("Authorization", token);
+        //set params
+        HashMap<String, String> params = new HashMap<>();
+        params.put("grant_type", "refresh_token");
+        params.put("refresh_token", refresh);
+        //params.put("code", url_Code);
+        //params.put("redirect_uri", "https://android.efforts.trd.client.nx.tsun.moe/oauth/callback");
+        //params.put("client_id", "07fbb8e4-8caa-4b91-a7f6-1db581164c9f");
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        CustomRequest jsObjRequest = new CustomRequest(Request.Method.POST, url, params, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    Log.d("onResponse", "JSON Response: " + response.toString(2));
+                    Log.d("access_token", response.get("access_token").toString());
+                    Log.d("refresh_token", response.get("refresh_token").toString());
+                    Log.d("expires_in", response.get("expires_in").toString());
+                    long expiredTime = getExpiredTime(response.get("expires_in").toString());
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    //enter the data from oauth token exchange
+                    editor.putString("access_token", response.get("access_token").toString());
+                    editor.putString("refresh_token", response.get("refresh_token").toString());
+                    editor.putLong("expires_in", expiredTime);
+                    //save it
+                    editor.apply();
+
+                    //get to Intent
+                    Log.d("RefreshToken", "Token has been refreshed!");
+                    Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("onErrorResponse", "JSON Response: " + error);
+                Log.d("onErrorResponse", "JSON Error: "+error.getLocalizedMessage());
+                Log.d("onErrorResponse", "JSON Error: "+error.getMessage());
+
+                Log.d("errorResponse", String.valueOf(error));
+                Log.d("errorHeader", String.valueOf(error.networkResponse.headers));
+                Log.d("errorResponseData", new String(error.networkResponse.data));
+            }
+        });
+        jsObjRequest.setHeaders(headers);
+
+        try {
+            Map<String, String> test = jsObjRequest.getHeaders();
+            Log.d("headers", test.get("Content-Type"));
+            Log.d("headers", test.get("Authorization"));
+        } catch (AuthFailureError authFailureError) {
+            authFailureError.printStackTrace();
+        }
+        //send the request
+        requestQueue.add(jsObjRequest);
+    }
+
+    private long getExpiredTime(String value) {
+        long currentTime = System.currentTimeMillis();
+        Log.d("currentTimeMilis", String.valueOf(currentTime));
+        long intervalInSeconds = Long.valueOf(value);
+        Log.d("intervalInSeconds", String.valueOf(intervalInSeconds));
+        long intervalInMiliSeconds = intervalInSeconds * 1000;
+        Log.d("intervalInMiliSeconds", String.valueOf(intervalInMiliSeconds));
+        long expireTimeInMilis = currentTime + intervalInMiliSeconds;
+        Log.d("expireTimeInMilis", String.valueOf(expireTimeInMilis));
+
+        return expireTimeInMilis;
     }
 }
