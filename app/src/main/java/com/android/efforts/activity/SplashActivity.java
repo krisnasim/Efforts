@@ -369,6 +369,11 @@ public class SplashActivity extends AppCompatActivity implements DialogInterface
                 Log.d("errorResponse", String.valueOf(error));
                 Log.d("errorHeader", String.valueOf(error.networkResponse.headers));
                 Log.d("errorResponseData", new String(error.networkResponse.data));
+
+                //for now, throw to relogin again
+                Toast.makeText(SplashActivity.this, "Silahkan login kembali", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                startActivity(intent);
             }
         });
         jsObjRequest.setHeaders(headers);

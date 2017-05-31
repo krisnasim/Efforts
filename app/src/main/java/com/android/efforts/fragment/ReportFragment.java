@@ -70,6 +70,7 @@ public class ReportFragment extends Fragment implements Response.ErrorListener, 
     private String token = "";
     private Bitmap testPhoto;
     private String mCurrentPhotoPath;
+    private boolean imageUploaded = false;
     private ProgressDialog progressDialog;
     private int PICK_IMAGE_REQUEST = 1;
     private static final int REQUEST_IMAGE_CAPTURE = 2;
@@ -85,19 +86,23 @@ public class ReportFragment extends Fragment implements Response.ErrorListener, 
 
     @OnClick(R.id.submit_competitor_btn)
     public void sendData() {
-        progressDialog = new ProgressDialog(getActivity(), R.style.CustomDialog);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Mohon tunggu...");
-        progressDialog.show();
+        if(!imageUploaded) {
+            Toast.makeText(getContext(), "Foto belum berhasil diunggah. Mohon tunggu hingga foto selesai diunggah", Toast.LENGTH_SHORT).show();
+        } else {
+            progressDialog = new ProgressDialog(getActivity(), R.style.CustomDialog);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage("Mohon tunggu...");
+            progressDialog.show();
 
-        try {
-            loginWithOAuthNX("email", "pdd");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            try {
+                loginWithOAuthNX("email", "pdd");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -328,6 +333,7 @@ public class ReportFragment extends Fragment implements Response.ErrorListener, 
             e.printStackTrace();
         }
 
+        Toast.makeText(getContext(), "Mengunggah foto. Mohon tunggu...", Toast.LENGTH_LONG).show();
         //upload the image
         uploadImageNX(testPhoto);
     }
@@ -354,6 +360,8 @@ public class ReportFragment extends Fragment implements Response.ErrorListener, 
                     Log.d("code", response.getCode());
                     image_url = "https://form.nx.tsun.moe/r/api/v1/assets/"+response.getCode();
                     //bodyResult = JWTUtils.decoded(String.valueOf(response));
+                    imageUploaded = true;
+                    Toast.makeText(getContext(), "Foto telah berhasil diunggah", Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

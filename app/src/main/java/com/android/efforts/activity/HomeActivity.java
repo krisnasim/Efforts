@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -42,10 +43,8 @@ import butterknife.ButterKnife;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, Response.Listener<JSONObject>, Response.ErrorListener {
 
-    @BindView(R.id.dell_image_logo)
-    ImageView dell_image_logo;
-    @BindView(R.id.level_label)
-    TextView level_label;
+    @BindView(R.id.dell_image_logo) ImageView dell_image_logo;
+    @BindView(R.id.level_label) TextView level_label;
 
     private String qrCodeRes;
     private Runnable mRunnable;
@@ -68,6 +67,23 @@ public class HomeActivity extends AppCompatActivity
         String fullName = sharedPref.getString("full_name", "John Did");
         String email = sharedPref.getString("email", "nomail@reply.com");
         String token = sharedPref.getString("access_token", "noToken");
+        String absent_status = sharedPref.getString("absent_status", "empty");
+
+        if(absent_status.equals("MASUK")) {
+            //everything should be okay here
+        } else {
+            //uh-oh, some feature should be disabled here
+            hideMenuItems();
+        }
+//        else if(absent_status.equals("MASUK")) {
+//
+//        } else if(absent_status.equals("KELUAR")) {
+//
+//        } else if(absent_status.equals("SAKIT")) {
+//
+//        } else if(absent_status.equals("LAIN_LAIN")) {
+//
+//        }
 
         //update label name and email
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_sr);
@@ -275,5 +291,13 @@ public class HomeActivity extends AppCompatActivity
         }
 
         return value;
+    }
+
+    private void hideMenuItems() {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_sr);
+        Menu nav_Menu = navigationView.getMenu();
+        nav_Menu.findItem(R.id.nav_competitor).setVisible(false);
+        nav_Menu.findItem(R.id.nav_report).setVisible(false);
+        nav_Menu.findItem(R.id.nav_task).setVisible(false);
     }
 }
