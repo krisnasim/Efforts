@@ -62,6 +62,7 @@ public class AttendanceFragment extends Fragment implements Response.ErrorListen
 
     private String qrCodeRes;
     private Location currentLocation;
+    private String absent_status;
     private LocationManager locManager;
     private LocationListener locListener;
     private SharedPreferences sharedPref;
@@ -82,15 +83,11 @@ public class AttendanceFragment extends Fragment implements Response.ErrorListen
     private static int FATEST_INTERVAL = 5000; // 5 sec
     private static int DISPLACEMENT = 10; // 10 meters
 
-    @BindView(R.id.qr_code_button)
-    Button qr_code_button;
-    @BindView(R.id.qr_code_result)
-    TextView qr_code_result;
+    @BindView(R.id.qr_code_button) Button qr_code_button;
+    @BindView(R.id.qr_code_result) TextView qr_code_result;
     @BindView(R.id.submitAttendanceButton) Button submitAtt;
-    @BindView(R.id.attendance_type)
-    Spinner attendance_type;
-    @BindView(R.id.remark_attendance_input)
-    EditText remark_attendance_input;
+    @BindView(R.id.attendance_type) Spinner attendance_type;
+    @BindView(R.id.remark_attendance_input) EditText remark_attendance_input;
 
     @OnClick(R.id.location_button)
     public void findLocation() {
@@ -149,7 +146,24 @@ public class AttendanceFragment extends Fragment implements Response.ErrorListen
                 JSONObject jsonObjAtt = new JSONObject();
                 JSONObject jsonObjAbs = new JSONObject();
             try {
-                jsonObjAbs.put("status", "MASUK");
+                //get the status from spinner
+                String status_sent = "";
+                String status_selected = attendance_type.getSelectedItem().toString();
+                Log.d("selectedStatus", status_selected);
+
+                if(status_selected.equals("Masuk")) {
+                    status_sent = "MASUK";
+                } else if(status_selected.equals("Keluar")) {
+                    status_sent = "KELUAR";
+                } else if(status_selected.equals("Sakit")) {
+                    status_sent = "SAKIT";
+                } else if(status_selected.equals("Lain-Lain")) {
+                    status_sent = "LAIN_LAIN";
+                }
+
+                absent_status = status_sent;
+
+                jsonObjAbs.put("status", status_sent);
                 jsonObjAbs.put("remark", remark_attendance_input.getText().toString());
 
                 JSONObject jsonObjLoc = new JSONObject();
@@ -358,6 +372,13 @@ public class AttendanceFragment extends Fragment implements Response.ErrorListen
         String store_id = "";
         progressDialog.dismiss();
         Log.d("onResponse", "JSON Response: " + response.toString());
+
+        //get shared pref to save last absent status
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("userCred", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("absent_status", absent_status);
+        //save it
+        editor.apply();
 
         Toast.makeText(getActivity(), "Absen berhasil!", Toast.LENGTH_LONG).show();
         Intent intent = new Intent(getActivity(), HomeActivity.class);

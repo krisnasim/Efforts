@@ -89,6 +89,7 @@ public class CompetitorFragment extends Fragment implements Response.Listener<Nx
     private String image_url;
     private String token;
     private Bitmap testPhoto;
+    private boolean imageUploaded = false;
     private int PICK_IMAGE_REQUEST = 1;
     private static final int REQUEST_IMAGE_CAPTURE = 2;
     private DatePickerDialog.OnDateSetListener startDateListener;
@@ -122,6 +123,8 @@ public class CompetitorFragment extends Fragment implements Response.Listener<Nx
             Toast.makeText(getActivity(), "Anda belum memasukan tanggal mulai program!", Toast.LENGTH_SHORT).show();
         } else if(endDate.matches("")) {
             Toast.makeText(getActivity(), "Anda belum memasukan tanggal akhir program!", Toast.LENGTH_SHORT).show();
+        } else if(!imageUploaded) {
+            Toast.makeText(getActivity(), "Foto belum berhasil diunggah. Mohon tunggu hingga foto selesai diunggah", Toast.LENGTH_SHORT).show();
         } else {
 //            final SharedPreferences sharedPref = getActivity().getSharedPreferences("userCred", Context.MODE_PRIVATE);
 //            token  = sharedPref.getString("access_token", "NoToken");
@@ -417,6 +420,7 @@ public class CompetitorFragment extends Fragment implements Response.Listener<Nx
                     Log.d("onResponse", response.toString());
                     Log.d("code", response.getCode());
                     image_url = "https://form.nx.tsun.moe/r/api/v1/assets/"+response.getCode();
+                    imageUploaded = true;
                     //bodyResult = JWTUtils.decoded(String.valueOf(response));
                 } catch (Exception e) {
                     e.printStackTrace();

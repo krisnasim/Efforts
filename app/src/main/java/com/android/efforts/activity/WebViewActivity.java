@@ -193,6 +193,7 @@ public class WebViewActivity extends AppCompatActivity implements Response.Error
             editor.putString("access_token", response.get("access_token").toString());
             editor.putString("refresh_token", response.get("refresh_token").toString());
             editor.putLong("expires_in", expiredTime);
+            editor.putString("absent_status", "empty");
             //save it
             editor.apply();
 
