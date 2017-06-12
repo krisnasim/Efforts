@@ -27,7 +27,6 @@ import com.android.efforts.fragment.CompetitorFragment;
 import com.android.efforts.fragment.HomeFragment;
 import com.android.efforts.fragment.NewsFragment;
 import com.android.efforts.fragment.ReportFragment;
-import com.android.efforts.fragment.SelloutFragment;
 import com.android.efforts.fragment.TaskFragment;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;

@@ -19,7 +19,6 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.google.protobuf.Message;
 
 import java.io.ByteArrayOutputStream;
-import java.util.HashMap;
 import java.util.Map;
 
 /**

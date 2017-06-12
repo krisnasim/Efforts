@@ -2,7 +2,6 @@ package com.android.efforts.activity;
 
 import android.app.Activity;
 import android.content.pm.PackageManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;

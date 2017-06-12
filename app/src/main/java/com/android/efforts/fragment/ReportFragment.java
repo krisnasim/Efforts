@@ -24,10 +24,7 @@ import android.widget.Toast;
 
 import com.android.efforts.R;
 import com.android.efforts.activity.HomeActivity;
-import com.android.efforts.customclass.CustomJSONObjectRequest;
-import com.android.efforts.customclass.JWTUtils;
 import com.android.efforts.customclass.ProtoBufRequest;
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -50,8 +47,6 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import id.zelory.compressor.FileUtil;
-import moe.tsun.nx.api.NxAssetProto;
 import moe.tsun.nx.api.NxCommonProto;
 import moe.tsun.nx.api.NxFormProto;
 

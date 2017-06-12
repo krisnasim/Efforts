@@ -28,14 +28,14 @@ import butterknife.ButterKnife;
 
 public class NewsAdapter extends BaseAdapter implements View.OnClickListener {
 
-    private Activity activity;
+    //private Activity activity;
     private LayoutInflater inflater;
     private List<News> newsData;
     private News tempValues;
     public Resources res;
 
     public NewsAdapter(Activity activity, List<News> data, Resources resLocal) {
-        this.activity = activity;
+        //this.activity = activity;
         this.newsData = data;
         this.res = resLocal;
 

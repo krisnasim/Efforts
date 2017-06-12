@@ -448,6 +448,8 @@ public class SelloutFragment extends Fragment implements Response.ErrorListener 
             for (int i = 0; i < b.length; i++) {
                 System.out.print((char)b[i]);
             }
+            //close file
+            fileInputStream.close();
         } catch (FileNotFoundException e) {
             System.out.println("File Not Found.");
             e.printStackTrace();

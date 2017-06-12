@@ -32,10 +32,6 @@ import android.widget.Toast;
 import com.android.efforts.R;
 import com.android.efforts.activity.HomeActivity;
 import com.android.efforts.customclass.ProtoBufRequest;
-import com.android.efforts.customclass.VolleyMultipartRequest;
-import com.android.efforts.customclass.VolleySingleton;
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -97,7 +93,7 @@ public class CompetitorFragment extends Fragment implements Response.Listener<Nx
     private static final int REQUEST_IMAGE_CAPTURE = 2;
     private DatePickerDialog.OnDateSetListener startDateListener;
     private DatePickerDialog.OnDateSetListener endDateListener;
-    private EditText currentDateInput;
+    //private EditText currentDateInput;
     private ProgressDialog progressDialog;
     private SharedPreferences sharedPref;
 

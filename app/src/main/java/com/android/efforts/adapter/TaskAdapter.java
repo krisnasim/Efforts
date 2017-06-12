@@ -28,14 +28,14 @@ import butterknife.ButterKnife;
 
 public class TaskAdapter extends BaseAdapter implements View.OnClickListener {
 
-    private Activity activity;
+    //private Activity activity;
     private LayoutInflater inflater;
     private List<Task> taskData;
     private Task tempValues;
     public Resources res;
 
     public TaskAdapter(Activity activity, List<Task> data, Resources resLocal) {
-        this.activity = activity;
+        //this.activity = activity;
         this.taskData = data;
         this.res = resLocal;
 
