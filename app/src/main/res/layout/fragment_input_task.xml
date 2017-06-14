@@ -1,0 +1,144 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.android.efforts.fragment.InputTaskFragment">
+
+        <TextView
+            android:text="Judul Tugas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:id="@+id/task_title_label"
+            android:layout_marginStart="35dp" />
+
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:hint="@string/information_hint"
+            android:ems="10"
+            android:layout_marginTop="12dp"
+            android:id="@+id/task_title_input"
+            android:layout_below="@+id/task_title_label"
+            android:layout_alignStart="@+id/task_title_label" />
+
+        <TextView
+            android:text="Deskripsi Tugas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:id="@+id/task_content_label"
+            android:layout_below="@id/task_title_input"
+            android:layout_marginStart="35dp" />
+
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:hint="@string/information_hint"
+            android:ems="10"
+            android:lines="3"
+            android:gravity="top"
+            android:layout_marginTop="12dp"
+            android:id="@+id/task_content_input"
+            android:layout_below="@+id/task_content_label"
+            android:layout_alignStart="@+id/task_title_label" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="30dp"
+            android:layout_below="@id/task_content_input"
+            android:id="@+id/date_input_group"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:orientation="vertical">
+                <TextView
+                    android:text="Tanggal Mulai"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:id="@+id/start_date_task" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="date"
+                    android:hint="Pilih tanggal"
+                    android:ems="10"
+                    android:layout_marginTop="13dp"
+                    android:id="@+id/start_date_task_input" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:orientation="vertical">
+                <TextView
+                    android:text="Tanggal Akhir"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:id="@+id/end_date_task" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="date"
+                    android:hint="Pilih tanggal"
+                    android:ems="10"
+                    android:layout_marginTop="13dp"
+                    android:id="@+id/end_date_task_input" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:text="Deskripsi Tugas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:id="@+id/task_status_label"
+            android:layout_below="@id/date_input_group"
+            android:layout_marginStart="35dp" />
+
+        <Spinner
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/task_status_type"
+            android:entries="@array/task_status"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/task_status_label"
+            android:layout_centerHorizontal="true" />
+
+        <Button
+            android:text="@string/submit_button_competitor_fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:textColor="#ffffff"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="20dp"
+            android:id="@+id/submit_task_btn"
+            android:layout_below="@+id/task_status_type"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+
+</ScrollView>

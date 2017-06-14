@@ -16,6 +16,14 @@
         <item>Lain-Lain</item>
     </string-array>
 
+    <string-array name="task_status">
+        <item>Tertunda</item>
+        <item>Selesai</item>
+        <item>Diterima</item>
+        <item>Ditolak</item>
+        <item>Lain-Lain</item>
+    </string-array>
+
     <string-array name="home_menu_list">
         <item>Absen</item>
         <item>Report</item>

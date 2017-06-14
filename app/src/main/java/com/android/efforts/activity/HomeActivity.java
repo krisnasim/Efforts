@@ -26,6 +26,7 @@ import com.android.efforts.R;
 import com.android.efforts.fragment.AttendanceFragment;
 import com.android.efforts.fragment.CompetitorFragment;
 import com.android.efforts.fragment.HomeFragment;
+import com.android.efforts.fragment.InputTaskFragment;
 import com.android.efforts.fragment.NewsFragment;
 import com.android.efforts.fragment.ReportFragment;
 import com.android.efforts.fragment.TaskFragment;
@@ -243,8 +244,8 @@ public class HomeActivity extends AppCompatActivity
         dell_image_logo.setVisibility(View.GONE);
 
         boolean boolIntent = checkforBundle();
-        Fragment fragment = new HomeFragment();
-        //Fragment fragment = new ReportFragment();
+        //Fragment fragment = new HomeFragment();
+        Fragment fragment = new InputTaskFragment();
         Log.d("boolIntent", String.valueOf(boolIntent));
 //        if(boolIntent) {
 //            //fragment = new ForumFragment();
