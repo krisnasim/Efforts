@@ -244,8 +244,8 @@ public class HomeActivity extends AppCompatActivity
         dell_image_logo.setVisibility(View.GONE);
 
         boolean boolIntent = checkforBundle();
-        //Fragment fragment = new HomeFragment();
-        Fragment fragment = new InputTaskFragment();
+        Fragment fragment = new HomeFragment();
+        //Fragment fragment = new InputTaskFragment();
         Log.d("boolIntent", String.valueOf(boolIntent));
 //        if(boolIntent) {
 //            //fragment = new ForumFragment();

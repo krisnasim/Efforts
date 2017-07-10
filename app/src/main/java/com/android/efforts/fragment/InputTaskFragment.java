@@ -57,7 +57,7 @@ public class InputTaskFragment extends Fragment {
         progressDialog.show();
     }
 
-    @OnClick(R.id.start_date_competitor_input)
+    @OnClick(R.id.start_date_task_input)
     public void pickStartDate() {
         new DatePickerDialog(getActivity(), startDateListener,
                 myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
@@ -65,7 +65,7 @@ public class InputTaskFragment extends Fragment {
         updateDateLabel(start_date_task_input);
     }
 
-    @OnClick(R.id.end_date_competitor_input)
+    @OnClick(R.id.end_date_task_input)
     public void pickEndDate() {
         new DatePickerDialog(getActivity(), endDateListener,
                 myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
