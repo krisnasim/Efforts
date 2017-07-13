@@ -58,11 +58,32 @@
         android:paddingLeft="10dp"
         android:text="Task Content"/>
 
+    <TextView
+        android:id="@+id/task_start_date"
+        android:layout_width="190dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/task_content"
+        android:layout_marginTop="1dip"
+        android:textSize="12sp"
+        android:paddingLeft="10dp"
+        android:text="Task Created"/>
+
+    <TextView
+        android:id="@+id/task_end_date"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/task_start_date"
+        android:layout_marginTop="1dip"
+        android:textSize="12sp"
+        android:paddingLeft="10dp"
+        android:text="Task Created"/>
+
     <!-- Available Seat(s) -->
     <TextView
         android:id="@+id/task_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/task_end_date"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:text="Status"/>

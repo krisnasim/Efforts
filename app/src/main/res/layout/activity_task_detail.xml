@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.android.efforts.activity.TaskDetailActivity">
+
+    <TextView
+        android:text="Judul Tugas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="18sp"
+        android:id="@+id/task_title_label"
+        android:layout_marginStart="35dp" />
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="@string/information_hint"
+        android:ems="10"
+        android:layout_marginTop="12dp"
+        android:textSize="14sp"
+        android:id="@+id/task_title_input"
+        android:layout_below="@+id/task_title_label"
+        android:layout_alignStart="@+id/task_title_label" />
+
+    <TextView
+        android:text="Detil Tugas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:textSize="18sp"
+        android:id="@+id/task_content_label"
+        android:layout_below="@+id/task_title_input"
+        android:layout_alignStart="@+id/task_title_label"/>
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:hint="@string/information_hint"
+        android:textSize="14sp"
+        android:layout_marginTop="12dp"
+        android:id="@+id/task_content_input"
+        android:layout_below="@+id/task_content_label"
+        android:layout_alignStart="@+id/task_content_label" />
+
+    <TextView
+        android:text="Tanggal Mulai Tugas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:textSize="18sp"
+        android:id="@+id/task_date_start_label"
+        android:layout_below="@+id/task_content_input"
+        android:layout_alignStart="@+id/task_content_input"/>
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:hint="@string/information_hint"
+        android:textSize="14sp"
+        android:layout_marginTop="12dp"
+        android:id="@+id/task_date_start_input"
+        android:layout_below="@+id/task_date_start_label"
+        android:layout_alignStart="@+id/task_content_label" />
+
+    <TextView
+        android:text="Tanggal Akhir Tugas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:textSize="18sp"
+        android:id="@+id/task_date_end_label"
+        android:layout_below="@+id/task_date_start_input"
+        android:layout_alignStart="@+id/task_content_input"/>
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:hint="@string/information_hint"
+        android:textSize="14sp"
+        android:layout_marginTop="12dp"
+        android:id="@+id/task_date_end_input"
+        android:layout_below="@+id/task_date_end_label"
+        android:layout_alignStart="@+id/task_content_label" />
+
+    <TextView
+        android:text="Status Tugas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:textSize="18sp"
+        android:id="@+id/task_status_label"
+        android:layout_below="@+id/task_date_end_input"
+        android:layout_alignStart="@+id/task_content_input"/>
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:hint="@string/information_hint"
+        android:textSize="14sp"
+        android:layout_marginTop="12dp"
+        android:id="@+id/task_status_input"
+        android:layout_below="@+id/task_status_label"
+        android:layout_alignStart="@+id/task_content_label" />
+
+    <Button
+        android:id="@+id/task_respond_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:textColor="#ffffff"
+        android:layout_marginTop="27dp"
+        android:text="Lapor"
+        android:layout_below="@+id/task_status_input"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

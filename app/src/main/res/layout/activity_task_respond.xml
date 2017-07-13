@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.android.efforts.activity.TaskRespondActivity">
+
+        <TextView
+            android:text="@string/information_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="35dp"
+            android:id="@+id/task_respond_label" />
+
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:minHeight="100dp"
+            android:gravity="top"
+            android:hint="Informasi tugas"
+            android:maxLines="5"
+            android:ems="10"
+            android:layout_marginTop="12dp"
+            android:id="@+id/task_respond_input"
+            android:layout_below="@+id/task_respond_label"
+            android:layout_alignStart="@+id/task_respond_label" />
+
+        <TextView
+            android:text="Foto Bukti Tugas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_below="@id/task_respond_input"
+            android:id="@+id/task_respond_picture"
+            android:layout_alignStart="@+id/task_respond_input" />
+
+        <Button
+            android:text="Pilih"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/pick_image_task_button"
+            android:background="@color/colorAccent"
+            android:textColor="#ffffff"
+            android:layout_alignTop="@+id/task_respond_picture"
+            android:layout_alignEnd="@+id/task_respond_input"
+            android:layout_marginEnd="14dp" />
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="262dp"
+            android:id="@+id/competitor_picture"
+            android:layout_marginTop="15dp"
+            android:layout_below="@+id/task_respond_picture"
+            android:layout_alignStart="@+id/task_respond_picture" />
+
+        <Button
+            android:text="Kirim"
+            android:padding="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/competitor_picture"
+            android:id="@+id/submit_task_respond_button"
+            android:background="@color/colorAccent"
+            android:textColor="#ffffff"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+</ScrollView>

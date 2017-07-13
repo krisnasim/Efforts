@@ -47,6 +47,8 @@ public class TaskAdapter extends BaseAdapter implements View.OnClickListener {
         @BindView(R.id.task_title) TextView task_title;
         @BindView(R.id.task_content) TextView task_content;
         @BindView(R.id.task_timestamp) TextView task_timestamp;
+        @BindView(R.id.task_start_date) TextView task_start_date;
+        @BindView(R.id.task_end_date) TextView task_end_date;
         @BindView(R.id.task_status) TextView task_status;
         @BindView(R.id.avatar) ImageView avatar;
 
@@ -102,16 +104,21 @@ public class TaskAdapter extends BaseAdapter implements View.OnClickListener {
             Log.d("GetViewData", String.valueOf(tempValues.getTaskName()));
 
             Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            Format formatter2 = new SimpleDateFormat("yyyy-MM-dd");
             //Format formatter = new SimpleDateFormat("EEE MMM d HH:mm:ss Z yyyy");
             Date date = tempValues.getTaskTimestamp();
             //Log.d("DateView", String.valueOf(tempValues.getTravelStart()));
             String datetoString = formatter.format(date);
+            String dateStart = formatter2.format(tempValues.getTaskStartDate());
+            String dateEnd = formatter2.format(tempValues.getTaskEndDate());
 
             holder.task_name.setText(tempValues.getTaskName());
             holder.task_title.setText(tempValues.getTaskTitle());
             holder.task_content.setText(tempValues.getTaskContent());
             holder.task_status.setText(tempValues.getTaskStatus());
             holder.task_timestamp.setText(datetoString);
+            holder.task_start_date.setText("Mulai: "+dateStart);
+            holder.task_end_date.setText("Akhir: "+dateEnd);
             holder.avatar.setImageResource(R.mipmap.ic_launcher);
         }
 

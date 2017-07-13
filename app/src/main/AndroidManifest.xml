@@ -30,8 +30,9 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"></meta-data>
+                android:resource="@xml/file_paths" />
         </provider>
+
         <activity
             android:name=".activity.SplashActivity"
             android:theme="@style/NoActionBar">
@@ -46,10 +47,10 @@
             android:theme="@style/NoActionBar" />
         <activity
             android:name=".activity.BarcodeActivity"
-            android:theme="@style/NoActionBar"/>
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".activity.QRCodeActivity"
-            android:theme="@style/NoActionBar"/>
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".activity.HomeActivity"
             android:theme="@style/NoActionBar" />
@@ -68,10 +69,11 @@
         </activity>
         <activity android:name=".activity.AccountActivity" />
         <activity android:name=".activity.AuthenticatorActivity" />
-        <activity android:name=".activity.WebViewActivity"
-            android:theme="@style/NoActionBar">
-
-        </activity>
+        <activity
+            android:name=".activity.WebViewActivity"
+            android:theme="@style/NoActionBar" />
+        <activity android:name=".activity.TaskDetailActivity" />
+        <activity android:name=".activity.TaskRespondActivity"></activity>
     </application>
 
 </manifest>

@@ -1,6 +1,7 @@
 package com.android.efforts.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -14,6 +15,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.android.efforts.R;
+import com.android.efforts.activity.HomeActivity;
+import com.android.efforts.activity.TaskDetailActivity;
+import com.android.efforts.activity.WebViewActivity;
 import com.android.efforts.adapter.TaskAdapter;
 import com.android.efforts.customclass.ProtoBufRequest;
 import com.android.efforts.model.Task;
@@ -26,6 +30,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -77,22 +83,22 @@ public class TaskFragment extends Fragment implements Response.ErrorListener, Re
             e.printStackTrace();
         }
 
-        //get date
-        Date date = new Date(2017, 05, 25, 8, 30);
+//        //get date
+//        Date date = new Date(2017, 05, 25, 8, 30);
+//
+//        //create new forum object
+//        Task newTask = new Task();
+//        newTask.setTaskName("Sales");
+//        newTask.setTaskTitle("Check for sellout");
+//        newTask.setTaskContent("Check for daily sellouts");
+//        newTask.setTaskStatus("Pending");
+//        newTask.setTaskTimestamp(date);
+//
+//        for(int x = 0; x < 6; x++) {
+//            taskData.add(newTask);
+//        }
 
-        //create new forum object
-        Task newTask = new Task();
-        newTask.setTaskName("Sales");
-        newTask.setTaskTitle("Check for sellout");
-        newTask.setTaskContent("Check for daily sellouts");
-        newTask.setTaskStatus("Pending");
-        newTask.setTaskTimestamp(date);
-
-        for(int x = 0; x < 6; x++) {
-            taskData.add(newTask);
-        }
-
-        setAdapter();
+        //setAdapter();
 
         return view;
     }
@@ -129,6 +135,45 @@ public class TaskFragment extends Fragment implements Response.ErrorListener, Re
         String bodyResult = "";
         try {
             Log.d("onResponse", response.toString());
+
+            NxFormProto.PgQrDatum responseData = response;
+            List<NxFormProto.QrDatum> arrayData = responseData.getPayloadList();
+
+            for(int i=0; i<arrayData.size(); i++) {
+                NxFormProto.QrDatum data = arrayData.get(i);
+                Log.d("content", String.valueOf(data.getId()));
+                Log.d("content", String.valueOf(data.getCredentialId()));
+                Log.d("content", String.valueOf(data.getCreatedAt()));
+                Log.d("content", String.valueOf(data.getUpdatedAt()));
+                JSONObject JSONdata = new JSONObject(data.getContent());
+                Log.d("JSON", String.valueOf(JSONdata.get("date")));
+                Log.d("JSON", String.valueOf(JSONdata.get("date_start")));
+                Log.d("JSON", String.valueOf(JSONdata.get("date_end")));
+                Log.d("JSON", String.valueOf(JSONdata.get("title")));
+                Log.d("JSON", String.valueOf(JSONdata.get("content")));
+                Log.d("JSON", String.valueOf(JSONdata.get("status")));
+                //Log.d("content", String.valueOf(data.getContent()));
+
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
+                Date timestampDate = df.parse(String.valueOf(JSONdata.get("date")));
+                Date startTaskDate = df2.parse(String.valueOf(JSONdata.get("date_start")));
+                Date endTaskDate = df2.parse(String.valueOf(JSONdata.get("date_end")));
+
+                Task newTask = new Task();
+                newTask.setTaskID(String.valueOf(data.getId()));
+                newTask.setTaskName("John Doe");
+                newTask.setTaskTitle(String.valueOf(JSONdata.get("title")));
+                newTask.setTaskContent(String.valueOf(JSONdata.get("content")));
+                newTask.setTaskStatus(String.valueOf(JSONdata.get("status")));
+                newTask.setTaskTimestamp(timestampDate);
+                newTask.setTaskStartDate(startTaskDate);
+                newTask.setTaskEndDate(endTaskDate);
+
+                taskData.add(newTask);
+            }
+
+            setAdapter();
             //bodyResult = JWTUtils.decoded(String.valueOf(response));
         } catch (Exception e) {
             e.printStackTrace();
@@ -145,7 +190,16 @@ public class TaskFragment extends Fragment implements Response.ErrorListener, Re
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Log.d("log", "task clicked");
+                    Task selectedTask = (Task) parent.getItemAtPosition(position);
+                    Log.d("task", selectedTask.getTaskTitle());
+                    Log.d("task", selectedTask.getTaskID());
 
+                    //start Intent
+                    Intent intent = new Intent(getActivity(), TaskDetailActivity.class);
+                    //make bundle
+                    Bundle extra = new Bundle();
+                    intent.putExtra("task", selectedTask);
+                    startActivity(intent);
                 }
             });
         }
@@ -156,7 +210,7 @@ public class TaskFragment extends Fragment implements Response.ErrorListener, Re
 
     private void loginWithOAuthNX(String email, String pwd) throws JSONException, UnsupportedEncodingException {
         //String url = "http://192.168.100.60:8180/r/api/v1/data";
-        String url = "https://form.nx.tsun.moe/r/api/v1/forms/3210349132296870646/data";
+        String url = "https://form.nx.tsun.moe/r/api/v1/forms/3215339506078574761/data";
 
         //convert both clientID and clientSecret into Base64
         String clientID = "07fbb8e4-8caa-4b91-a7f6-1db581164c9f";
@@ -195,7 +249,8 @@ public class TaskFragment extends Fragment implements Response.ErrorListener, Re
 
         //CUSTOM SAMPLE FOR NXFORMPROTOBUF
         //NxFormProto.OpForm testForm = NxFormProto.OpForm.newBuilder()
-        NxFormProto.OpDatum testDatum = NxFormProto.OpDatum.newBuilder().setFormId(3210349132296870646L).setContent(jsonObj.toString(2)).build();
+        //NxFormProto.OpDatum testDatum = NxFormProto.OpDatum.newBuilder().setFormId(3210349132296870646L).setContent(jsonObj.toString(2)).build();
+        NxFormProto.OpDatum testDatum = NxFormProto.OpDatum.newBuilder().setFormId(3215339506078574761L).setContent(jsonObj.toString(2)).build();
         byte[] data = testDatum.toByteArray();
         //NxFormProto.OpTemplate testTemplate = NxFormProto.OpTemplate.newBuilder()
 
