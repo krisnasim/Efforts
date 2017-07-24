@@ -152,6 +152,8 @@ public class TaskFragment extends Fragment implements Response.ErrorListener, Re
                 Log.d("JSON", String.valueOf(JSONdata.get("title")));
                 Log.d("JSON", String.valueOf(JSONdata.get("content")));
                 Log.d("JSON", String.valueOf(JSONdata.get("status")));
+                Log.d("JSON", String.valueOf(JSONdata.get("task_id_reference")));
+                //Log.d("JSON", String.valueOf(JSONdata.get("task_id_obsolete")));
                 //Log.d("content", String.valueOf(data.getContent()));
 
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -169,6 +171,8 @@ public class TaskFragment extends Fragment implements Response.ErrorListener, Re
                 newTask.setTaskTimestamp(timestampDate);
                 newTask.setTaskStartDate(startTaskDate);
                 newTask.setTaskEndDate(endTaskDate);
+                newTask.setTaskIDReference(String.valueOf(JSONdata.get("task_id_reference")));
+                Log.d("newTask", newTask.getTaskIDReference());
 
                 taskData.add(newTask);
             }
@@ -210,7 +214,7 @@ public class TaskFragment extends Fragment implements Response.ErrorListener, Re
 
     private void loginWithOAuthNX(String email, String pwd) throws JSONException, UnsupportedEncodingException {
         //String url = "http://192.168.100.60:8180/r/api/v1/data";
-        String url = "https://form.nx.tsun.moe/r/api/v1/forms/3215339506078574761/data";
+        String url = "https://form.nx.tsun.moe/r/api/v1/forms/3223195701625743566/data";
 
         //convert both clientID and clientSecret into Base64
         String clientID = "07fbb8e4-8caa-4b91-a7f6-1db581164c9f";
@@ -234,8 +238,8 @@ public class TaskFragment extends Fragment implements Response.ErrorListener, Re
         JSONObject jsonObj = new JSONObject();
 //        jsonObj.put("username", email);
 //        jsonObj.put("password_digest", pwd);
-        jsonObj.put("title", "this is title report");
-        jsonObj.put("description", "this is description");
+        jsonObj.put("title", "mencoba kirim tugas dari android");
+        jsonObj.put("description", "coba kamu buat tugas dari android");
         jsonObj.put("report_type", "authorization_report");
         JSONObject photo = new JSONObject();
         photo.put("path", "https://vignette4.wikia.nocookie.net/k-on/images/b/be/K-ON_Character.jpg");

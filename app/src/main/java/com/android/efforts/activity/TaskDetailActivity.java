@@ -62,5 +62,9 @@ public class TaskDetailActivity extends AppCompatActivity {
         task_date_start_input.setText(startDate);
         task_date_end_input.setText(endDate);
         task_status_input.setText(selectedTask.getTaskStatus());
+
+        Log.d("selectedTask", selectedTask.getTaskContent());
+        Log.d("selectedTask", selectedTask.getTaskStatus());
+        Log.d("selectedTask", selectedTask.getTaskIDReference());
     }
 }

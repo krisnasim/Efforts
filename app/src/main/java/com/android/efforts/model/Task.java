@@ -20,6 +20,7 @@ public class Task implements Parcelable {
     private Date taskStartDate;
     private Date taskEndDate;
     private String taskID;
+    private String taskIDReference;
 
     public String getTaskName() {
         return taskName;
@@ -85,6 +86,14 @@ public class Task implements Parcelable {
         this.taskStatus = taskStatus;
     }
 
+    public String getTaskIDReference() {
+        return taskIDReference;
+    }
+
+    public void setTaskIDReference(String taskIDReference) {
+        this.taskIDReference = taskIDReference;
+    }
+
 
     @Override
     public int describeContents() {
@@ -101,6 +110,7 @@ public class Task implements Parcelable {
         dest.writeLong(this.taskStartDate != null ? this.taskStartDate.getTime() : -1);
         dest.writeLong(this.taskEndDate != null ? this.taskEndDate.getTime() : -1);
         dest.writeString(this.taskID);
+        dest.writeString(this.taskIDReference);
     }
 
     public Task() {
@@ -118,9 +128,10 @@ public class Task implements Parcelable {
         long tmpTaskEndDate = in.readLong();
         this.taskEndDate = tmpTaskEndDate == -1 ? null : new Date(tmpTaskEndDate);
         this.taskID = in.readString();
+        this.taskIDReference = in.readString();
     }
 
-    public static final Parcelable.Creator<Task> CREATOR = new Parcelable.Creator<Task>() {
+    public static final Creator<Task> CREATOR = new Creator<Task>() {
         @Override
         public Task createFromParcel(Parcel source) {
             return new Task(source);
